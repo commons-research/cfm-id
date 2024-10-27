@@ -5,6 +5,9 @@ set(BASE_HEADERS
 	FeatureVector.h
 	Feature.h
 	FeatureCalculator.h
+	Isotope.h
+	Spectrum.h
+	Version.h
 )
 set(BASE_SOURCES
 	Util.cpp
@@ -13,6 +16,8 @@ set(BASE_SOURCES
 	FeatureVector.cpp
 	Feature.cpp
 	FeatureCalculator.cpp
+	Isotope.cpp
+	Spectrum.cpp
 )
 
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/Features FEATURES_SRC_DIR)
