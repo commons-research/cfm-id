@@ -21,11 +21,11 @@ param.cpp.
 
 class NLRootAtom : public RootAtomFeature {
 public:
-    NLRootAtom() {
-        size = 13;
-        name = "NLRootAtom";
-    };
+	NLRootAtom() {
+		size = 13;
+		name = "NLRootAtom";
+	};
 
-    void
-    compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };

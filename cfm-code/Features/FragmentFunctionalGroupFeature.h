@@ -22,9 +22,9 @@ param.cpp.
 
 class FragmentFunctionalGroupFeature : public FragmentFeature {
 public:
-    FragmentFunctionalGroupFeature() {
-        size = NUM_FGRPS;
-        name = "FragmentFunctionalGroup";
-    };
-    virtual void compute(FeatureVector &fv, romol_ptr_t precursor_ion) const override;
+	FragmentFunctionalGroupFeature() {
+		size = NUM_FGRPS;
+		name = "FragmentFunctionalGroup";
+	};
+	virtual void compute(FeatureVector &fv, const romol_ptr_t &precursor_ion) const override;
 };

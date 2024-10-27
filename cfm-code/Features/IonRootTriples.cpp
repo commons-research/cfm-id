@@ -17,11 +17,12 @@ param.cpp.
 #########################################################################*/
 #include "IonRootTriples.h"
 
-void IonRootTriples::compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const {
+void IonRootTriples::compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+                             const std::unique_ptr<RootedROMol> &nl) const {
 
-    int ring_break;
-    nl->mol.get()->getProp("IsRingBreak", ring_break);
-    std::vector<path_t> paths;
-    computeRootPaths(paths, ion, 3, false);
-    addRootTripleFeatures(fv, paths, ring_break);
+	int ring_break;
+	nl->mol.get()->getProp("IsRingBreak", ring_break);
+	std::vector<path_t> paths;
+	computeRootPaths(paths, ion, 3, false);
+	addRootTripleFeatures(fv, paths, ring_break);
 }

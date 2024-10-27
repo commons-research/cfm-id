@@ -19,11 +19,11 @@
 
 class IonRootPairs : public RootPathFeature {
 public:
-    IonRootPairs() {
-        size = 145;
-        name = "IonRootPairs";
-    };
+	IonRootPairs() {
+		size = 145;
+		name = "IonRootPairs";
+	};
 
-    void
-    compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };

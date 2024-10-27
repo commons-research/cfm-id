@@ -20,11 +20,11 @@
 
 class IonRootMMFFAtomType : public BreakFeature {
 public:
-    IonRootMMFFAtomType() {
-        size = 100;
-        name = "IonRootMMFFAtomType";
-    };
+	IonRootMMFFAtomType() {
+		size = 100;
+		name = "IonRootMMFFAtomType";
+	};
 
-    void
-    compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };

@@ -16,11 +16,10 @@
 #########################################################################*/
 #include "IonRootAtom.h"
 
-void
-IonRootAtom::compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const {
+void IonRootAtom::compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+                          const std::unique_ptr<RootedROMol> &nl) const {
 
-    int ring_break;
-    nl->mol.get()->getProp("IsRingBreak", ring_break);
-    computeRootAtomFeature(fv, ion, ring_break);
+	int ring_break;
+	nl->mol.get()->getProp("IsRingBreak", ring_break);
+	computeRootAtomFeature(fv, ion, ring_break);
 }
-    

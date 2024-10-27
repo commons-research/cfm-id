@@ -21,47 +21,47 @@ param.cpp.
 // Features use fingerprint encode ion fragmentation
 class IonRootEncodingD3 : public FingerPrintFeature {
 public:
-    IonRootEncodingD3() {
-        size = 512;
-        name = "IonRootEncodingD3";
-    };
+	IonRootEncodingD3() {
+		size = 512;
+		name = "IonRootEncodingD3";
+	};
 
-    void
-    compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
 
 // Features use fingerprint encode ion fragmentation
 class IonRootEncodingN10 : public FingerPrintFeature {
 public:
-    IonRootEncodingN10() {
-        size = 1024;
-        name = "IonRootEncodingN10";
-    };
+	IonRootEncodingN10() {
+		size = 1024;
+		name = "IonRootEncodingN10";
+	};
 
-    void
-    compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
 
 // Features use fingerprint encode ion fragmentation
 class IonRootEncodingD4 : public FingerPrintFeature {
 public:
-    IonRootEncodingD4() {
-        size = 512;
-        name = "IonRootEncodingD4";
-    };
+	IonRootEncodingD4() {
+		size = 512;
+		name = "IonRootEncodingD4";
+	};
 
-    void
-    compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
 
 // Features use fingerprint encode ion fragmentation
 class IonRootEncodingMorganD3 : public FingerPrintFeature {
 public:
-    IonRootEncodingMorganD3() {
-        size = 512;
-        name = "IonRootEncodingMorganD3";
-    };
+	IonRootEncodingMorganD3() {
+		size = 512;
+		name = "IonRootEncodingMorganD3";
+	};
 
-    void
-    compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };

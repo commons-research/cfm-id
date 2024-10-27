@@ -21,11 +21,11 @@ param.cpp.
 
 class NLNeighbourMMFFAtomType : public NeighbourMMFFFeature {
 public:
-    NLNeighbourMMFFAtomType() {
-        size = 101;
-        name = "NLNeighbourMMFFAtomType";
-    };
+	NLNeighbourMMFFAtomType() {
+		size = 101;
+		name = "NLNeighbourMMFFAtomType";
+	};
 
-    void
-    compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };

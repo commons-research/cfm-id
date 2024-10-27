@@ -21,11 +21,11 @@ param.cpp.
 
 class NLFunctionalGroupFeatures : public FunctionalGroupFeature {
 public:
-    NLFunctionalGroupFeatures() {
-        size = (NUM_FGRPS + 1) * 2;
-        name = "NLFunctionalGroupFeatures";
-    };
+	NLFunctionalGroupFeatures() {
+		size = (NUM_FGRPS + 1) * 2;
+		name = "NLFunctionalGroupFeatures";
+	};
 
-    void
-    compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };

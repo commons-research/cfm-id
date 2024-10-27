@@ -21,11 +21,11 @@ param.cpp.
 
 class QuadraticFeatures : public BreakFeature {
 public:
-    QuadraticFeatures() {
-        size = 0;
-        name = "QuadraticFeatures";
-    };
+	QuadraticFeatures() {
+		size = 0;
+		name = "QuadraticFeatures";
+	};
 
-    void
-    compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };

@@ -17,7 +17,6 @@
 #pragma once
 
 #include "FeatureVector.h"
-#include "FunctionalGroups.h"
 #include "Util.h"
 
 #include <GraphMol/FragCatalog/FragCatParams.h>
@@ -25,11 +24,8 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/ptr_container/ptr_vector.hpp>
 
-#include <fstream>
-#include <iostream>
 #include <memory>
 #include <string>
-#include <unordered_map>
 #include <vector>
 
 typedef std::pair<std::string, std::string> symbol_pair_t;
@@ -103,5 +99,5 @@ public:
 
 class FragmentFeature : public Feature {
 public:
-	virtual void compute(FeatureVector &fv, romol_ptr_t precursor_ion) const = 0;
+	virtual void compute(FeatureVector &fv, const romol_ptr_t &precursor_ion) const = 0;
 };

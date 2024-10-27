@@ -16,9 +16,9 @@
 #########################################################################*/
 #include "NLFingerPrintFeature.h"
 
-void
-NLFingerPrintFeature::compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const {
+void NLFingerPrintFeature::compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+                                   const std::unique_ptr<RootedROMol> &nl) const {
 
-    int morgan_radius = 2;
-    addMorganFingerPrintFeatures(fv,nl,size, morgan_radius);
+	int morgan_radius = 2;
+	addMorganFingerPrintFeatures(fv, nl, size, morgan_radius);
 }

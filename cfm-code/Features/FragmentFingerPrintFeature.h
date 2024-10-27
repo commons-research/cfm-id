@@ -20,12 +20,11 @@ param.cpp.
 
 #include "../Feature.h"
 
-class FragmentFingerPrintFeature : public  FragmentFeature{
+class FragmentFingerPrintFeature : public FragmentFeature {
 public:
-    FragmentFingerPrintFeature() {
-        size = 1024;
-        name = "FragmentFingerPrint";
-    };
-    virtual void compute(FeatureVector &fv, romol_ptr_t precursor_ion) const override;
+	FragmentFingerPrintFeature() {
+		size = 1024;
+		name = "FragmentFingerPrint";
+	};
+	virtual void compute(FeatureVector &fv, const romol_ptr_t &precursor_ion) const override;
 };
-

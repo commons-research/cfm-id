@@ -20,11 +20,11 @@
 
 class IonFunctionalGroupRootOnlyFeatures : public FunctionalGroupFeature {
 public:
-    IonFunctionalGroupRootOnlyFeatures() {
-        size = NUM_FGRPS + 1;
-        name = "IonFunctionalGroupRootOnlyFeatures";
-    };
+	IonFunctionalGroupRootOnlyFeatures() {
+		size = NUM_FGRPS + 1;
+		name = "IonFunctionalGroupRootOnlyFeatures";
+	};
 
-    void
-    compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };

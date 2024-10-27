@@ -17,7 +17,6 @@
 
 #include "Feature.h"
 #include "FeatureVector.h"
-#include "FunctionalGroups.h"
 #include "Util.h"
 
 #include <GraphMol/FragCatalog/FragCatParams.h>
@@ -25,11 +24,9 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/ptr_container/ptr_vector.hpp>
 
-#include <fstream>
 #include <iostream>
 #include <memory>
 #include <string>
-#include <unordered_map>
 #include <vector>
 
 // Exception to throw when the input feature configuration file is invalid
@@ -75,7 +72,8 @@ public:
 	// Compute the feature vector for the input ion and nl (with labeled Root
 	// atoms)
 	// - NB: responsibility of caller to delete.
-	std::unique_ptr<FeatureVector> computeFeatureVector(const std::unique_ptr<RootedROMol> &ion, const RootedROMol *nl,
+	std::unique_ptr<FeatureVector> computeFeatureVector(const std::unique_ptr<RootedROMol> &ion,
+	                                                    const std::unique_ptr<RootedROMol> &nl,
 	                                                    const romol_ptr_t &precursor_ion);
 
 	bool includesFeature(const std::string &fname);

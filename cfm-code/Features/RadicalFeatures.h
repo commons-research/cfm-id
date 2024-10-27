@@ -21,11 +21,11 @@ param.cpp.
 
 class RadicalFeatures : public BreakFeature {
 public:
-    RadicalFeatures() {
-        size = 3;
-        name = "RadicalFeatures";
-    };
+	RadicalFeatures() {
+		size = 3;
+		name = "RadicalFeatures";
+	};
 
-    void
-    compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };

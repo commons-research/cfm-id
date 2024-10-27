@@ -18,6 +18,6 @@
 void IonFunctionalGroupFeatures::compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
                                          const std::unique_ptr<RootedROMol> &nl) const {
 	int ring_break;
-	nl->mol.get()->getProp("IsRingBreak", ring_break);
+	nl->mol->getProp("IsRingBreak", ring_break);
 	addFunctionalGroupFeatures(fv, ion, 1, false);
 }

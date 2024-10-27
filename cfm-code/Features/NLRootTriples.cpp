@@ -17,11 +17,12 @@ param.cpp.
 #########################################################################*/
 #include "NLRootTriples.h"
 
-void NLRootTriples::compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const {
+void NLRootTriples::compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+                            const std::unique_ptr<RootedROMol> &nl) const {
 
-    int ring_break;
-    nl->mol.get()->getProp("IsRingBreak", ring_break);
-    std::vector<path_t> paths;
-    computeRootPaths(paths, nl, 3, false);
-    addRootTripleFeatures(fv, paths, ring_break);
+	int ring_break;
+	nl->mol.get()->getProp("IsRingBreak", ring_break);
+	std::vector<path_t> paths;
+	computeRootPaths(paths, nl, 3, false);
+	addRootTripleFeatures(fv, paths, ring_break);
 }

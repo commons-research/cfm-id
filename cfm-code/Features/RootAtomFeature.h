@@ -18,9 +18,9 @@ param.cpp.
 #pragma once
 
 #include "../Feature.h"
+#include <memory>
 
 class RootAtomFeature : public BreakFeature {
 protected:
-    void computeRootAtomFeature(FeatureVector &fv, const RootedROMol *mol,
-                                bool ring_break) const;
+	void computeRootAtomFeature(FeatureVector &fv, const std::unique_ptr<RootedROMol> &mol, bool ring_break) const;
 };

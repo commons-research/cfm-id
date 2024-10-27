@@ -17,9 +17,9 @@ param.cpp.
 #########################################################################*/
 #include "NLExtraFunctionalGroupFeatures.h"
 
-void
-NLExtraFunctionalGroupFeatures::compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const {
-    int ring_break;
-    nl->mol.get()->getProp("IsRingBreak", ring_break);
-    addFunctionalGroupFeatures(fv, nl, 1, true);
+void NLExtraFunctionalGroupFeatures::compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+                                             const std::unique_ptr<RootedROMol> &nl) const {
+	int ring_break;
+	nl->mol.get()->getProp("IsRingBreak", ring_break);
+	addFunctionalGroupFeatures(fv, nl, 1, true);
 }

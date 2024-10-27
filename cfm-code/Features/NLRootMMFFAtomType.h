@@ -21,11 +21,11 @@ param.cpp.
 
 class NLRootMMFFAtomType : public BreakFeature {
 public:
-    NLRootMMFFAtomType() {
-        size = 100;
-        name = "NLRootMMFFAtomType";
-    };
+	NLRootMMFFAtomType() {
+		size = 100;
+		name = "NLRootMMFFAtomType";
+	};
 
-    void
-    compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };

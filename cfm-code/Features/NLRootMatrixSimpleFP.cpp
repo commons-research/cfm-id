@@ -17,50 +17,56 @@ param.cpp.
 #################################################################y########*/
 #include "NLRootMatrixSimpleFP.h"
 
-void NLRootGeneralizedMatrixFPN8::compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const {
-    unsigned int num_atoms = 8;
-    unsigned int max_distance = 8;
-    addGenernalizedRepresentationFeature(fv, nl, num_atoms, max_distance);
+void NLRootGeneralizedMatrixFPN8::compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+                                          const std::unique_ptr<RootedROMol> &nl) const {
+	unsigned int num_atoms    = 8;
+	unsigned int max_distance = 8;
+	addGenernalizedRepresentationFeature(fv, nl, num_atoms, max_distance);
 }
 
-
-void NLRootGeneralizedMatrixFPN10::compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const {
-    unsigned int num_atoms = 10;
-    unsigned int max_distance = 10;
-    addGenernalizedRepresentationFeature(fv, nl, num_atoms, max_distance);
+void NLRootGeneralizedMatrixFPN10::compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+                                           const std::unique_ptr<RootedROMol> &nl) const {
+	unsigned int num_atoms    = 10;
+	unsigned int max_distance = 10;
+	addGenernalizedRepresentationFeature(fv, nl, num_atoms, max_distance);
 }
 
-void NLRootMatrixSimpleFPN8D3::compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const {
-    unsigned int num_atoms = 8;
-    unsigned int max_distance = 3;
-    bool include_adjacency_matrix = false;
-    bool use_full_symbol_set = false;
+void NLRootMatrixSimpleFPN8D3::compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+                                       const std::unique_ptr<RootedROMol> &nl) const {
+	unsigned int num_atoms        = 8;
+	unsigned int max_distance     = 3;
+	bool include_adjacency_matrix = false;
+	bool use_full_symbol_set      = false;
 
-    addAdjacentMatrixRepresentationFeature(fv, nl, num_atoms, max_distance, include_adjacency_matrix, use_full_symbol_set);
+	addAdjacentMatrixRepresentationFeature(fv, nl, num_atoms, max_distance, include_adjacency_matrix,
+	                                       use_full_symbol_set);
 }
 
-void NLRootMatrixSimpleFPN10::compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const {
-    unsigned int num_atoms = 10;
-    bool include_adjacency_matrix = false;
-    bool use_full_symbol_set = false;
+void NLRootMatrixSimpleFPN10::compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+                                      const std::unique_ptr<RootedROMol> &nl) const {
+	unsigned int num_atoms        = 10;
+	bool include_adjacency_matrix = false;
+	bool use_full_symbol_set      = false;
 
-    addAdjacentMatrixRepresentationFeature(fv, nl, num_atoms, num_atoms, include_adjacency_matrix, use_full_symbol_set);
+	addAdjacentMatrixRepresentationFeature(fv, nl, num_atoms, num_atoms, include_adjacency_matrix, use_full_symbol_set);
 }
 
-void NLRootMatrixSimpleFPN16::compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const {
+void NLRootMatrixSimpleFPN16::compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+                                      const std::unique_ptr<RootedROMol> &nl) const {
 
-    bool include_adjacency_matrix = false;
-    unsigned int num_atoms = 16;
-    bool use_full_symbol_set = false;
+	bool include_adjacency_matrix = false;
+	unsigned int num_atoms        = 16;
+	bool use_full_symbol_set      = false;
 
-    addAdjacentMatrixRepresentationFeature(fv, nl, num_atoms, num_atoms, include_adjacency_matrix, use_full_symbol_set);
+	addAdjacentMatrixRepresentationFeature(fv, nl, num_atoms, num_atoms, include_adjacency_matrix, use_full_symbol_set);
 }
 
-void NLRootMatrixSimpleFPN32::compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const {
+void NLRootMatrixSimpleFPN32::compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+                                      const std::unique_ptr<RootedROMol> &nl) const {
 
-    bool include_adjacency_matrix = false;
-    unsigned int num_atoms = 32;
-    bool use_full_symbol_set = false;
+	bool include_adjacency_matrix = false;
+	unsigned int num_atoms        = 32;
+	bool use_full_symbol_set      = false;
 
-    addAdjacentMatrixRepresentationFeature(fv, nl, num_atoms, num_atoms, include_adjacency_matrix, use_full_symbol_set);
+	addAdjacentMatrixRepresentationFeature(fv, nl, num_atoms, num_atoms, include_adjacency_matrix, use_full_symbol_set);
 }

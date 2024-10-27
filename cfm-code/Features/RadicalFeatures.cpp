@@ -17,12 +17,12 @@ param.cpp.
 #########################################################################*/
 #include "RadicalFeatures.h"
 
-void
-RadicalFeatures::compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const {
+void RadicalFeatures::compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+                              const std::unique_ptr<RootedROMol> &nl) const {
 
-    int ion_radical = moleculeHasSingleRadical(ion->mol.get());
-    int nl_radical = moleculeHasSingleRadical(nl->mol.get());
-    fv.addFeature(ion_radical);                 // Ion is radical
-    fv.addFeature(nl_radical);                  // NL is radical
-    fv.addFeature(!ion_radical && !nl_radical); // Neither NL or Ion are radical
+	int ion_radical = moleculeHasSingleRadical(ion->mol);
+	int nl_radical  = moleculeHasSingleRadical(nl->mol);
+	fv.addFeature(ion_radical);                 // Ion is radical
+	fv.addFeature(nl_radical);                  // NL is radical
+	fv.addFeature(!ion_radical && !nl_radical); // Neither NL or Ion are radical
 }

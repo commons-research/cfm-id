@@ -20,11 +20,11 @@
 
 class IonNeighbourMMFFAtomType : public NeighbourMMFFFeature {
 public:
-    IonNeighbourMMFFAtomType() {
-        size = 101;
-        name = "IonNeighbourMMFFAtomType";
-    };
+	IonNeighbourMMFFAtomType() {
+		size = 101;
+		name = "IonNeighbourMMFFAtomType";
+	};
 
-    void
-    compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };

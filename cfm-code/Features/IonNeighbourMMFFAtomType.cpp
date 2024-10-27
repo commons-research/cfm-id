@@ -17,11 +17,11 @@ param.cpp.
 #########################################################################*/
 #include "IonNeighbourMMFFAtomType.h"
 
-void IonNeighbourMMFFAtomType::compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const {
-    int offset = fv.getTotalLength() - 1;
+void IonNeighbourMMFFAtomType::compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+                                       const std::unique_ptr<RootedROMol> &nl) const {
+	int offset = fv.getTotalLength() - 1;
 
-    fv.addFeatureAtIdx(0.0,
-                       offset + 101); // Make the feature vector the right length
-    addNeighbourAtomTypes(fv, ion, ion->root, offset);
-
+	fv.addFeatureAtIdx(0.0,
+	                   offset + 101); // Make the feature vector the right length
+	addNeighbourAtomTypes(fv, ion, ion->root, offset);
 }

@@ -21,12 +21,11 @@
 class IonicFeatures : public BreakFeature {
 
 public:
-    IonicFeatures() {
-        size = 5;
-        name = "IonicFeatures";
-    };
+	IonicFeatures() {
+		size = 5;
+		name = "IonicFeatures";
+	};
 
-    void
-    compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
-

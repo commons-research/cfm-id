@@ -57,6 +57,7 @@
 #include "Features/RadicalFeatures.h"
 
 #include <boost/algorithm/string/trim.hpp>
+#include <memory>
 
 const boost::ptr_vector<BreakFeature> &FeatureCalculator::breakFeatureCogs() {
 
@@ -249,10 +250,11 @@ unsigned int FeatureCalculator::getNumFeatures() {
 	return count;
 }
 
-FeatureVector *FeatureCalculator::computeFeatureVector(const RootedROMol *ion, const RootedROMol *nl,
-                                                       const romol_ptr_t precursor_ion) {
+std::unique_ptr<FeatureVector> FeatureCalculator::computeFeatureVector(const std::unique_ptr<RootedROMol> &ion,
+                                                                       const std::unique_ptr<RootedROMol> &nl,
+                                                                       const romol_ptr_t &precursor_ion) {
 
-	FeatureVector *fv = new FeatureVector();
+	std::unique_ptr<FeatureVector> fv = std::make_unique<FeatureVector>();
 
 	// Add the Bias Feature
 	fv->addFeature(1.0);

@@ -21,60 +21,66 @@ param.cpp.
 // Features use fingerprint encode NL fragmentation
 class NLRootGeneralizedMatrixFPN8 : public FingerPrintFeature {
 public:
-    NLRootGeneralizedMatrixFPN8() {
-        size = 126 * 1 + 42 *7; // 60 + 45 + 50
-        name = "NLRootGeneralizedMatrixFPN8";
-    };
+	NLRootGeneralizedMatrixFPN8() {
+		size = 126 * 1 + 42 * 7; // 60 + 45 + 50
+		name = "NLRootGeneralizedMatrixFPN8";
+	};
 
-    void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
 
 class NLRootGeneralizedMatrixFPN10 : public FingerPrintFeature {
 public:
-    NLRootGeneralizedMatrixFPN10() {
-        size =  126 * 1 + 42 * 9; // 60 + 45 + 50
-        name = "NLRootGeneralizedMatrixFPN10";
-    };
+	NLRootGeneralizedMatrixFPN10() {
+		size = 126 * 1 + 42 * 9; // 60 + 45 + 50
+		name = "NLRootGeneralizedMatrixFPN10";
+	};
 
-    void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
 
 class NLRootMatrixSimpleFPN8D3 : public FingerPrintFeature {
 public:
-    NLRootMatrixSimpleFPN8D3() {
-        size = 88;
-        name = "NLRootMatrixSimpleFPN8D3";
-    };
+	NLRootMatrixSimpleFPN8D3() {
+		size = 88;
+		name = "NLRootMatrixSimpleFPN8D3";
+	};
 
-    void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
 
 class NLRootMatrixSimpleFPN10 : public FingerPrintFeature {
 public:
-    NLRootMatrixSimpleFPN10() {
-        size = 110;
-        name = "NLRootMatrixSimpleFPN10";
-    };
+	NLRootMatrixSimpleFPN10() {
+		size = 110;
+		name = "NLRootMatrixSimpleFPN10";
+	};
 
-    void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
 
 class NLRootMatrixSimpleFPN16 : public FingerPrintFeature {
 public:
-    NLRootMatrixSimpleFPN16() {
-        size = 176;
-        name = "NLRootMatrixSimpleFPN16";
-    };
+	NLRootMatrixSimpleFPN16() {
+		size = 176;
+		name = "NLRootMatrixSimpleFPN16";
+	};
 
-    void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
 
 class NLRootMatrixSimpleFPN32 : public FingerPrintFeature {
 public:
-    NLRootMatrixSimpleFPN32() {
-        size = 352;
-        name = "NLRootMatrixSimpleFPN32";
-    };
+	NLRootMatrixSimpleFPN32() {
+		size = 352;
+		name = "NLRootMatrixSimpleFPN32";
+	};
 
-    void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };

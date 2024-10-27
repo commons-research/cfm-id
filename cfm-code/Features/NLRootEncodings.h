@@ -22,46 +22,47 @@ param.cpp.
 class NLRootEncodingD3 : public FingerPrintFeature {
 
 public:
-    NLRootEncodingD3() {
-        size = 512;
-        name = "NLRootEncodingD3";
-    };
+	NLRootEncodingD3() {
+		size = 512;
+		name = "NLRootEncodingD3";
+	};
 
-    void
-    compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
 
 // Features use fingerprint encode ion fragmentation
 class NLRootEncodingN10 : public FingerPrintFeature {
 public:
-    NLRootEncodingN10() {
-        size = 1024;
-        name = "NLRootEncodingN10";
-    };
+	NLRootEncodingN10() {
+		size = 1024;
+		name = "NLRootEncodingN10";
+	};
 
-    void
-    compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
 
 // Features use fingerprint encode NL fragmentatNL
 class NLRootEncodingMorganD3 : public FingerPrintFeature {
 public:
-    NLRootEncodingMorganD3() {
-        size = 512;
-        name = "NLRootEncodingMorganD3";
-    };
+	NLRootEncodingMorganD3() {
+		size = 512;
+		name = "NLRootEncodingMorganD3";
+	};
 
-    void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
 
 // Features use fingerprint encode ion fragmentation
 class NLRootEncodingD4 : public FingerPrintFeature {
 public:
-    NLRootEncodingD4() {
-        size = 512;
-        name = "NLRootEncodingD4";
-    };
+	NLRootEncodingD4() {
+		size = 512;
+		name = "NLRootEncodingD4";
+	};
 
-    void
-    compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };

@@ -23,80 +23,88 @@ param.cpp.
 
 class NLRootMatrixFPN6 : public FingerPrintFeature {
 public:
-    NLRootMatrixFPN6() {
-        size = 156;
-        name = "NLRootMatrixFPN6";
-    };
+	NLRootMatrixFPN6() {
+		size = 156;
+		name = "NLRootMatrixFPN6";
+	};
 
-    void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
 
 class NLRootMatrixFPN6D2 : public FingerPrintFeature {
 public:
-    NLRootMatrixFPN6D2() {
-        size = 156;
-        name = "NLRootMatrixFPN6D2";
-    };
+	NLRootMatrixFPN6D2() {
+		size = 156;
+		name = "NLRootMatrixFPN6D2";
+	};
 
-    void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
 
 class NLRootMatrixFPN8 : public FingerPrintFeature {
 public:
-    NLRootMatrixFPN8() {
-        size = 256;
-        name = "NLRootMatrixFPN8";
-    };
+	NLRootMatrixFPN8() {
+		size = 256;
+		name = "NLRootMatrixFPN8";
+	};
 
-    void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
 
 class NLRootMatrixFPN8D3 : public FingerPrintFeature {
 public:
-    NLRootMatrixFPN8D3(){
-        size = 256;
-        name = "NLRootMatrixFPN8D3";
-    };
+	NLRootMatrixFPN8D3() {
+		size = 256;
+		name = "NLRootMatrixFPN8D3";
+	};
 
-    void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
 
 // Features use fingerprint encode NL fragmentation
 class NLRootMatrixFPN10 : public FingerPrintFeature {
 public:
-    NLRootMatrixFPN10() {
-        size = 380;
-        name = "NLRootMatrixFPN10";
-    };
-    void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	NLRootMatrixFPN10() {
+		size = 380;
+		name = "NLRootMatrixFPN10";
+	};
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
 
 class NLRootMatrixFPN16 : public FingerPrintFeature {
 public:
-    NLRootMatrixFPN16() {
-        size = 896;
-        name = "NLRootMatrixFPN16";
-    };
+	NLRootMatrixFPN16() {
+		size = 896;
+		name = "NLRootMatrixFPN16";
+	};
 
-    void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
 
 // Features use fingerprint encode NL fragmentation with more symbols
 class NLRootMatrixFPN10MoreSymbols : public FingerPrintFeature {
 public:
-    NLRootMatrixFPN10MoreSymbols() {
-        size = 440 ;
-        name = "NLRootMatrixFPN10MoreSymbols";
-    };
-    void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	NLRootMatrixFPN10MoreSymbols() {
+		size = 440;
+		name = "NLRootMatrixFPN10MoreSymbols";
+	};
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
 
 class NLRootMatrixFPN16MoreSymbols : public FingerPrintFeature {
 public:
-    NLRootMatrixFPN16MoreSymbols() {
-        size = 992;
-        name = "NLRootMatrixFPN16MoreSymbols";
-    };
+	NLRootMatrixFPN16MoreSymbols() {
+		size = 992;
+		name = "NLRootMatrixFPN16MoreSymbols";
+	};
 
-    void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };

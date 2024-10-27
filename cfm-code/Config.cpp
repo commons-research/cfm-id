@@ -23,7 +23,7 @@
 #include <iostream>
 #include <sstream>
 
-void initDefaultConfig(config_t &cfg, char *argv_zero) {
+void initDefaultConfig(config_t &cfg, const char *argv_zero) {
 
 	cfg.lambda             = DEFAULT_LAMBDA;
 	cfg.ga_method          = DEFAULT_USE_ADAM_FOR_GA;

@@ -17,11 +17,12 @@ param.cpp.
 #########################################################################*/
 #include "NLNeighbourMMFFAtomType.h"
 
-void NLNeighbourMMFFAtomType::compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const {
-    int offset = fv.getTotalLength() - 1;
-    int ring_break;
-    nl->mol.get()->getProp("IsRingBreak", ring_break);
-    fv.addFeatureAtIdx(0.0,
-                       offset + 101); // Make the feature vector the right length
-    addNeighbourAtomTypes(fv, nl, nl->root, offset);
+void NLNeighbourMMFFAtomType::compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+                                      const std::unique_ptr<RootedROMol> &nl) const {
+	int offset = fv.getTotalLength() - 1;
+	int ring_break;
+	nl->mol.get()->getProp("IsRingBreak", ring_break);
+	fv.addFeatureAtIdx(0.0,
+	                   offset + 101); // Make the feature vector the right length
+	addNeighbourAtomTypes(fv, nl, nl->root, offset);
 }

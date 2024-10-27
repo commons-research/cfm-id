@@ -19,13 +19,13 @@
 
 #include "FingerPrintFeature.h"
 
-class NLFingerPrintFeature : public FingerPrintFeature  {
+class NLFingerPrintFeature : public FingerPrintFeature {
 public:
-    NLFingerPrintFeature() {
-        size =  512;
-        name = "NLFingerPrintFeature";
-    };
+	NLFingerPrintFeature() {
+		size = 512;
+		name = "NLFingerPrintFeature";
+	};
 
-    void
-    compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };

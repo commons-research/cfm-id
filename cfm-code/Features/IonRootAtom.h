@@ -20,11 +20,11 @@
 
 class IonRootAtom : public RootAtomFeature {
 public:
-    IonRootAtom() {
-        size = 13;
-        name = "IonRootAtom";
-    };
+	IonRootAtom() {
+		size = 13;
+		name = "IonRootAtom";
+	};
 
-    void
-    compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };

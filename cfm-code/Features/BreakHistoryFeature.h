@@ -19,14 +19,14 @@
 
 class BreakHistoryFeature : public BreakFeature {
 public:
-    BreakHistoryFeature() {
-        size = 7 * (num_encoded_events + 1); // 7 bond type and up to 6 for each
-        name = "BreakHistoryFeature";
-    };
+	BreakHistoryFeature() {
+		size = 7 * (num_encoded_events + 1); // 7 bond type and up to 6 for each
+		name = "BreakHistoryFeature";
+	};
 
-    void
-    compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 
 private:
-    const int num_encoded_events = 5;
+	const int num_encoded_events = 5;
 };

@@ -21,11 +21,11 @@ param.cpp.
 
 class NLRootTriples : public RootPathFeature {
 public:
-    NLRootTriples() {
-        size = 865;
-        name = "NLRootTriples";
-    };
+	NLRootTriples() {
+		size = 865;
+		name = "NLRootTriples";
+	};
 
-    void
-    compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };

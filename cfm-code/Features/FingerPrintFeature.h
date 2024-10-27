@@ -38,22 +38,23 @@ protected:
 	// remove atoms from mol in given list
 	void removeAtomInTheList(RDKit::RWMol &mol, std::vector<unsigned int> &remove_atom_ids) const;
 
-	void addRDKitFingerPrintFeatures(FeatureVector &fv, const RootedROMol *mol, unsigned int finger_print_size,
-	                                 unsigned int limitation_param, bool limited_by_distance,
-	                                 unsigned int finger_print_min_path, unsigned int finger_print_max_path) const;
+	void addRDKitFingerPrintFeatures(FeatureVector &fv, const std::unique_ptr<RootedROMol> &mol,
+	                                 unsigned int finger_print_size, unsigned int limitation_param,
+	                                 bool limited_by_distance, unsigned int finger_print_min_path,
+	                                 unsigned int finger_print_max_path) const;
 
 	void addMorganFingerPrintFeatures(FeatureVector &fv, const std::unique_ptr<RootedROMol> &mol,
 	                                  unsigned int finger_print_size, unsigned int path_range, int radius) const;
 
-	void addAdjacentMatrixRepresentationFeature(FeatureVector &fv, const RootedROMol *mol, unsigned int num_atom,
-	                                            unsigned int max_distance, bool include_adjacency_matrix,
-	                                            bool use_full_symbols_set) const;
+	void addAdjacentMatrixRepresentationFeature(FeatureVector &fv, const std::unique_ptr<RootedROMol> &mol,
+	                                            unsigned int num_atom, unsigned int max_distance,
+	                                            bool include_adjacency_matrix, bool use_full_symbols_set) const;
 
 	void addMorganFingerPrintFeatures(FeatureVector &fv, const std::unique_ptr<RootedROMol> &mol,
 	                                  unsigned int finger_print_size, int radius) const;
 
-	void addGenernalizedRepresentationFeature(FeatureVector &fv, const RootedROMol *mol, unsigned int num_atom,
-	                                          unsigned int max_distance) const;
+	void addGenernalizedRepresentationFeature(FeatureVector &fv, const std::unique_ptr<RootedROMol> &mol,
+	                                          unsigned int num_atom, unsigned int max_distance) const;
 
 private:
 	void getAtomVisitOrderBFS(const RootedROMol *roMolPtr, std::vector<unsigned int> &visit_order,
@@ -70,7 +71,7 @@ private:
 	                          const unsigned int max_nbr_distance, const unsigned int finger_print_size,
 	                          const int radius) const;
 
-	void addRDKitFingerPrint(std::vector<int> &tmp_fv, const RootedROMol *mol, const RDKit::Atom *root,
+	void addRDKitFingerPrint(std::vector<int> &tmp_fv, const std::unique_ptr<RootedROMol> &mol, const RDKit::Atom *root,
 	                         unsigned int finger_print_size, unsigned int limitation_param,
 	                         unsigned int finger_print_min_path, unsigned int finger_print_max_path,
 	                         bool limited_by_distance) const;

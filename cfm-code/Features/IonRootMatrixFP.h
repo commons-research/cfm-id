@@ -20,84 +20,92 @@ param.cpp.
 
 // Features use fingerprint encode NL fragmentatNL
 
-//feature_size = num_atom * 11 + 6 * (num_atom) +   num_atom * (num_atom - 1) / 2 * 6;
-// Features use fingerprint encode NL fragmentation
+// feature_size = num_atom * 11 + 6 * (num_atom) +   num_atom * (num_atom - 1) / 2 * 6;
+//  Features use fingerprint encode NL fragmentation
 class IonRootMatrixFPN6 : public FingerPrintFeature {
 public:
-    IonRootMatrixFPN6() {
-        size = 156;
-        name = "IonRootMatrixFPN6";
-    };
+	IonRootMatrixFPN6() {
+		size = 156;
+		name = "IonRootMatrixFPN6";
+	};
 
-    void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
 
 class IonRootMatrixFPN6D2 : public FingerPrintFeature {
 public:
-    IonRootMatrixFPN6D2() {
-        size = 156;
-        name = "IonRootMatrixFPN6D2";
-    };
+	IonRootMatrixFPN6D2() {
+		size = 156;
+		name = "IonRootMatrixFPN6D2";
+	};
 
-    void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
 
 class IonRootMatrixFPN8 : public FingerPrintFeature {
 public:
-    IonRootMatrixFPN8() {
-        size = 256;
-        name = "IonRootMatrixFPN8";
-    };
+	IonRootMatrixFPN8() {
+		size = 256;
+		name = "IonRootMatrixFPN8";
+	};
 
-    void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
 
 class IonRootMatrixFPN8D3 : public FingerPrintFeature {
 public:
-    IonRootMatrixFPN8D3() {
-        size = 256;
-        name = "IonRootMatrixFPN8D3";
-    };
+	IonRootMatrixFPN8D3() {
+		size = 256;
+		name = "IonRootMatrixFPN8D3";
+	};
 
-    void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
 
 class IonRootMatrixFPN10 : public FingerPrintFeature {
 public:
-    IonRootMatrixFPN10() {
-        size = 380;
-        name = "IonRootMatrixFPN10";
-    };
+	IonRootMatrixFPN10() {
+		size = 380;
+		name = "IonRootMatrixFPN10";
+	};
 
-    void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
 
 class IonRootMatrixFPN16 : public FingerPrintFeature {
 public:
-    IonRootMatrixFPN16() {
-        size = 896;
-        name = "IonRootMatrixFPN16";
-    };
+	IonRootMatrixFPN16() {
+		size = 896;
+		name = "IonRootMatrixFPN16";
+	};
 
-    void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
 
 // Features use fingerprint encode NL fragmentation with more symbols
 class IonRootMatrixFPN10MoreSymbols : public FingerPrintFeature {
 public:
-    IonRootMatrixFPN10MoreSymbols() {
-        size = 440;
-        name = "IonRootMatrixFPN10MoreSymbols";
-    };
-    void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	IonRootMatrixFPN10MoreSymbols() {
+		size = 440;
+		name = "IonRootMatrixFPN10MoreSymbols";
+	};
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
 
 class IonRootMatrixFPN16MoreSymbols : public FingerPrintFeature {
 public:
-    IonRootMatrixFPN16MoreSymbols() {
-        size = 992;
-        name = "IonRootMatrixFPN16MoreSymbols";
-    };
+	IonRootMatrixFPN16MoreSymbols() {
+		size = 992;
+		name = "IonRootMatrixFPN16MoreSymbols";
+	};
 
-    void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+	void compute(FeatureVector &fv, const std::unique_ptr<RootedROMol> &ion,
+	             const std::unique_ptr<RootedROMol> &nl) const override;
 };
