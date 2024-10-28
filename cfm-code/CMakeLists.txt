@@ -11,6 +11,7 @@ set(BASE_HEADERS
 	Solver.h
 	Param.h
 	NNParam.h
+	MspReader.h
 )
 set(BASE_SOURCES
 	Util.cpp
@@ -24,6 +25,7 @@ set(BASE_SOURCES
 	Solver.cpp
 	Param.cpp
 	NNParam.cpp
+	MspReader.cpp
 )
 
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/Features FEATURES_SRC_DIR)
