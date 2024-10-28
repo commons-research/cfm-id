@@ -8,6 +8,9 @@ set(BASE_HEADERS
 	Isotope.h
 	Spectrum.h
 	Version.h
+	Solver.h
+	Param.h
+	NNParam.h
 )
 set(BASE_SOURCES
 	Util.cpp
@@ -18,6 +21,9 @@ set(BASE_SOURCES
 	FeatureCalculator.cpp
 	Isotope.cpp
 	Spectrum.cpp
+	Solver.cpp
+	Param.cpp
+	NNParam.cpp
 )
 
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/Features FEATURES_SRC_DIR)
