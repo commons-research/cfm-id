@@ -11,6 +11,10 @@ set(BASE_HEADERS
 	Feature.h
 	FeatureCalculator.h
 	Solver.h
+	Param.h
+	NNParam.h
+	MspReader.h
+	MolData.h
 )
 set(BASE_SOURCES
     Util.cpp
@@ -24,6 +28,10 @@ set(BASE_SOURCES
     FeatureCalculator.cpp
     ${FEATURES_SRC_DIR}
     Solver.cpp
+    Param.cpp
+    NNParam.cpp
+    MspReader.cpp
+    MolData.cpp
 )
 
 add_library(cfm-code STATIC ${BASE_HEADERS} ${BASE_SOURCES})  # Include both headers and sources

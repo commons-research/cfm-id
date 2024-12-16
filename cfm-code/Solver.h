@@ -6,6 +6,7 @@
 #define SOLVER_H
 
 #include "Param.h"
+#include <boost/shared_ptr.hpp>
 #include <set>
 #include <vector>
 
