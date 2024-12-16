@@ -30,17 +30,19 @@ include_directories(${Boost_INCLUDE_DIRS})
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 
-include(ExternalProject)
-set(EXTERNAL_INSTALL_LOCATION ${CMAKE_SOURCE_DIR}/rdkit)
-ExternalProject_Add(RDKit
-		PREFIX ${EXTERNAL_INSTALL_LOCATION}
-		GIT_REPOSITORY https://github.com/rdkit/rdkit
-		CMAKE_ARGS -DRDK_BUILD_PYTHON_WRAPPERS=OFF -DRDK_BUILD_INCHI_SUPPORT=ON
-)
-include_directories(${EXTERNAL_INSTALL_LOCATION}/src/RDKit/Code)
-include_directories(${EXTERNAL_INSTALL_LOCATION}/src/RDKit/External)
-link_directories(${EXTERNAL_INSTALL_LOCATION}/src/RDKit-build/lib)
-
+#include(ExternalProject)
+#set(EXTERNAL_INSTALL_LOCATION ${CMAKE_SOURCE_DIR}/rdkit)
+#ExternalProject_Add(RDKit
+#		PREFIX ${EXTERNAL_INSTALL_LOCATION}
+#		GIT_REPOSITORY https://github.com/rdkit/rdkit
+#		CMAKE_ARGS -DRDK_BUILD_PYTHON_WRAPPERS=OFF -DRDK_BUILD_INCHI_SUPPORT=ON
+#)
+#include_directories(${EXTERNAL_INSTALL_LOCATION}/src/RDKit/Code)
+#include_directories(${EXTERNAL_INSTALL_LOCATION}/src/RDKit/External)
+#link_directories(${EXTERNAL_INSTALL_LOCATION}/src/RDKit-build/lib)
+# We actually include rdkit from brew
+include_directories(/opt/homebrew/Cellar/rdkit/2024.09.3_1/include/rdkit)
+link_directories(/opt/homebrew/Cellar/rdkit/2024.09.3_1/lib)
 
 # LPSolve
 set(LPSOLVE_INCLUDE_DIR "" CACHE STRING "Where are the LPSolve headers?")
