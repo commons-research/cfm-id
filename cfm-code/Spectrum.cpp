@@ -67,7 +67,7 @@ void Spectrum::getDisplayedFragmentIds(std::set<int> &ids, bool normalize_to_max
 		}
 	}
 }
-void Spectrum::outputToMspStream(std::ostream &out, std::string id, int ionization_mode, int energy,
+void Spectrum::outputToMspStream(std::ostream &out, const std::string &id, int ionization_mode, int energy,
                                  std::string &smiles_or_inchi, int mz_precision) const {
 
 	if (ionization_mode == POSITIVE_EI_IONIZATION_MODE)
@@ -85,7 +85,7 @@ void Spectrum::outputToMspStream(std::ostream &out, std::string id, int ionizati
 	out << std::endl;
 }
 
-void Spectrum::outputToMgfStream(std::ostream &out, std::string id, int ionization_mode, int energy, double mw,
+void Spectrum::outputToMgfStream(std::ostream &out, const std::string &id, int ionization_mode, int energy, double mw,
                                  std::string &smiles_or_inchi, int mz_precision) const {
 
 	out << "BEGIN IONS" << std::endl;
@@ -117,7 +117,7 @@ void Spectrum::quantisePeaksByMass(int num_dec_places) {
 	auto it             = this->_peaks.begin();
 	for (; it != _peaks.end(); ++it) {
 		auto tmp_mass = (long long)(lround(it->mass() * std::pow(10.0, num_dec_places)));
-		it->new_mass(tmp_mass * std::pow(10.0, -num_dec_places));
+		it->new_mass(static_cast<double>(tmp_mass) * std::pow(10.0, -num_dec_places));
 		if (tmp_mass == prev_mass && it != _peaks.begin()) {
 			it->new_intensity(it->intensity() + (it - 1)->intensity());
 			it->annotations().insert(it->annotations().end(), (it - 1)->annotations().begin(),
