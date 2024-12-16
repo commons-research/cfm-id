@@ -5,7 +5,7 @@
 #include <memory>
 #include <random>
 
-typedef std::unique_ptr<RDKit::ROMol> romol_ptr_t;
+typedef boost::shared_ptr<RDKit::ROMol> romol_ptr_t;
 static const double MASS_ELECTRON = 0.000548579909;
 
 struct beliefs_t {                       // IN LOG DOMAIN!
@@ -47,12 +47,12 @@ void alterNumHs(std::unique_ptr<RDKit::Atom> &atom, int H_diff);
 romol_ptr_t createMolPtr(const char *smiles_or_inchi);
 
 // Helper function label NirtoGroup
-void labelNitroGroup(const std::unique_ptr<RDKit::ROMol> &mol);
+void labelNitroGroup(const RDKit::ROMol *mol);
 
 // Helper function to get valence
 int getValence(const std::unique_ptr<RDKit::Atom> &atom);
 
-inline double logAdd(double log_x, double log_y) {
+double logAdd(double log_x, double log_y) {
 
 	// ensure log_y >= log_x, can save some expensive log/exp calls
 	if (log_x > log_y) {

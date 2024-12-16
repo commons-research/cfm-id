@@ -21,6 +21,7 @@
 #include <boost/container/vector.hpp>
 #include <memory>
 #include <string>
+#include <vector>
 
 // Exception to throw when the input feature vector configuration doesn't match the parameters
 class ParamFeatureMismatchException : public std::exception {

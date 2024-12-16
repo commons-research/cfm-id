@@ -109,7 +109,7 @@ void softmax(std::vector<double> &weights, std::vector<double> &probs) {
 	for (auto &prob : probs) { prob /= sum; }
 }
 
-void labelNitroGroup(const std::unique_ptr<RDKit::ROMol> &mol) {
+void labelNitroGroup(const RDKit::ROMol *mol) {
 	// NOTE this is a context specific solution for nitro group single bond oxygen
 	std::unique_ptr<RDKit::FragCatParams> fparams =
 	    std::unique_ptr<RDKit::FragCatParams>(new RDKit::FragCatParams(PI_BOND_FGRPS_PICKLE));

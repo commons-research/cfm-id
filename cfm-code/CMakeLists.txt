@@ -12,6 +12,9 @@ set(BASE_HEADERS
 	Param.h
 	NNParam.h
 	MspReader.h
+	Message.h
+	MILP.h
+	FragmentTreeNode.h
 )
 set(BASE_SOURCES
 	Util.cpp
@@ -26,6 +29,9 @@ set(BASE_SOURCES
 	Param.cpp
 	NNParam.cpp
 	MspReader.cpp
+	Message.cpp
+	MILP.cpp
+	FragmentTreeNode.cpp
 )
 
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/Features FEATURES_SRC_DIR)

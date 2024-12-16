@@ -90,13 +90,7 @@ link_directories(LPSOLVE_LIBRARY)
 mark_as_advanced(LPSOLVE_LIBRARY)
 
 find_package(Threads)
-include(FindMPI)
-if (MPI_FOUND)
-    include_directories(${MPI_INCLUDE_PATH})
-    message(STATUS "Found MPI Headers ${MPI_INCLUDE_PATH}")
-else ()
-    message(FATAL_ERROR "Could not find MPI")
-endif ()
+find_package(OpenMP)
 
 #Common Library
 add_subdirectory(cfm-code)
