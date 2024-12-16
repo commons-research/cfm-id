@@ -15,77 +15,84 @@
 #########################################################################*/
 #pragma once
 
+#include "Util.h"
+#include "FunctionalGroups.h"
 #include "Feature.h"
 #include "FeatureVector.h"
-#include "Util.h"
 
 #include <GraphMol/FragCatalog/FragCatParams.h>
 
-#include <boost/lexical_cast.hpp>
 #include <boost/ptr_container/ptr_vector.hpp>
+#include <boost/lexical_cast.hpp>
 
-#include <iostream>
 #include <string>
-#include <utility>
 #include <vector>
+#include <unordered_map>
+#include <iostream>
+#include <fstream>
 
 // Exception to throw when the input feature configuration file is invalid
 class InvalidConfigException : public std::exception {
 
-	[[nodiscard]] const char *what() const noexcept override { return "Invalid Feature Configuration File"; }
+    virtual const char *what() const noexcept {
+        return "Invalid Feature Configuration File";
+    }
 };
 
 class FeatureCalculationException : public std::exception {
 private:
-	std::string _message;
+    std::string message_;
 
 public:
-	explicit FeatureCalculationException(std::string message) noexcept : _message(std::move(message)) {};
+    FeatureCalculationException(const std::string &message) noexcept
+            : message_(message) {};
 
-	[[nodiscard]] const char *what() const noexcept override {
-		std::cout << "Error computing feature vector: " << _message << std::endl;
-		return _message.c_str();
-	}
+    virtual const char *what() const noexcept {
+        std::cout << "Error computing feature vector: " << message_ << std::endl;
+        return message_.c_str();
+    }
 
-	~FeatureCalculationException() noexcept override = default;
+    ~FeatureCalculationException() noexcept {};
 };
 
 // Class to compute a feature vector
 class FeatureCalculator {
-private:
-	// Indexes of feature classes that are selected for use
-	std::vector<int> _used_break_feature_idxs;
-	std::vector<int> _used_fragement_feature_idxs;
-	// List of feature classes ready to be used
-	static const boost::ptr_vector<BreakFeature> &breakFeatureCogs();
-
-	// List of fragmentation features ready to be used
-	static const boost::ptr_vector<FragmentFeature> &fragmentFeatureCogs();
-
-	// Helper function - Configure feature for use
-	void configureFeature(std::string &name);
 
 public:
-	// Constructor: Initialise the calculator using a config file listing features
-	explicit FeatureCalculator(std::string &config_filename);
+    // Constructor: Initialise the calculator using a config file listing features
+    FeatureCalculator(std::string &config_filename);
 
-	// Constructor: Initialise the calculator using a list of feature names
-	explicit FeatureCalculator(std::vector<std::string> &feature_list);
+    // Constructor: Initialise the calculator using a list of feature names
+    FeatureCalculator(std::vector<std::string> &feature_list);
 
-	// Compute the expected number of total features
-	unsigned int getNumFeatures();
+    // Compute the expected number of total features
+    unsigned int getNumFeatures();
 
-	// Retrieve the list of feature names being used
-	std::vector<std::string> getFeatureNames();
+    // Retrieve the list of feature names being used
+    std::vector<std::string> getFeatureNames();
 
-	// Retrieve a list of valid feature names (for testing)
-	static const std::vector<std::string> getValidFeatureNames();
+    // Retrieve a list of valid feature names (for testing)
+    static const std::vector<std::string> getValidFeatureNames();
 
-	// Compute the feature vector for the input ion and nl (with labeled Root
-	// atoms)
-	// - NB: responsibility of caller to delete.
-	FeatureVector *computeFeatureVector(const RootedROMol *ion, const RootedROMol *nl,
-	                                    const romol_ptr_t &precursor_ion);
+    // Compute the feature vector for the input ion and nl (with labeled Root
+    // atoms)
+    // - NB: responsibility of caller to delete.
+    FeatureVector *computeFeatureVector(const RootedROMol *ion, const RootedROMol *nl, const romol_ptr_t precursor_ion);
 
-	bool includesFeature(const std::string &fname);
+    bool includesFeature(const std::string &fname);
+
+private:
+    // List of feature classes ready to be used
+    static const boost::ptr_vector<BreakFeature> &breakFeatureCogs();
+
+    // List of fragmentation features ready to be used
+    static const boost::ptr_vector<FragmentFeature> &fragmentFeatureCogs();
+
+    // Indexes of feature classes that are selected for use
+    std::vector<int> used_break_feature_idxs;
+    std::vector<int> used_fragement_feature_idxs;
+
+    // Helper function - Configure feature for use
+    void configureFeature(std::string &name);
 };
+

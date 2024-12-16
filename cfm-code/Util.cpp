@@ -53,38 +53,42 @@ double getMonoIsotopicMass(const romol_ptr_t &mol) {
 }
 
 // Helper function to find an atom with the given label
-const RDKit::Atom *getLabeledAtom(const romol_ptr_t &mol, const char *label) {
+RDKit::Atom *getLabeledAtom(const romol_ptr_t &mol, const char *label) {
+	RDKit::ROMol::AtomIterator ai;
 	int root = 0;
-	for (const auto &atom : mol->atoms()) {
-		atom->getProp(label, root);
-		if (root) { return atom; }
+	for (ai = mol.get()->beginAtoms(); ai != mol.get()->endAtoms(); ++ai) {
+		(*ai)->getProp(label, root);
+		if (root) break;
 	}
-	return nullptr;
+	if (root)
+		return *ai;
+	else
+		return nullptr;
 }
 
 int moleculeHasSingleRadical(const RDKit::ROMol *romol) {
 
 	unsigned int num_radicals = 0;
-	for (const auto &atom : romol->atoms()) {
+	for (RDKit::ROMol::ConstAtomIterator ait = romol->beginAtoms(); ait != romol->endAtoms(); ++ait) {
 		int ionic_frag_q;
-		atom->getProp("IonicFragmentCharge", ionic_frag_q);
+		(*ait)->getProp("IonicFragmentCharge", ionic_frag_q);
 		if (ionic_frag_q != 0) continue; // Don't include radicals on ionic fragments
-		num_radicals += atom->getNumRadicalElectrons();
+		num_radicals += (*ait)->getNumRadicalElectrons();
 	}
 	return (num_radicals == 1);
 }
 
-int addIonicChargeLabels(RDKit::ROMol &romol) {
+int addIonicChargeLabels(const RDKit::ROMol *romol) {
 
 	std::vector<int> mapping;
-	unsigned int num_frags = RDKit::MolOps::getMolFrags(romol, mapping);
+	unsigned int num_frags = RDKit::MolOps::getMolFrags(*romol, mapping);
 
 	RDKit::ROMol::ConstAtomIterator ai;
 	int num_ionic = 0;
-	for (auto &atom : romol.atoms()) {
-		atom->setProp("IonicFragmentCharge", 0);
-		if (num_frags > 1 && atom->getDegree() == 0 && atom->getFormalCharge() != 0) {
-			atom->setProp("IonicFragmentCharge", atom->getFormalCharge());
+	for (ai = romol->beginAtoms(); ai != romol->endAtoms(); ++ai) {
+		(*ai)->setProp("IonicFragmentCharge", 0);
+		if (num_frags > 1 && (*ai)->getDegree() == 0 && (*ai)->getFormalCharge() != 0) {
+			(*ai)->setProp("IonicFragmentCharge", (*ai)->getFormalCharge());
 			num_ionic++;
 		}
 	}
@@ -105,7 +109,7 @@ romol_ptr_t createMolPtr(const char *smiles_or_inchi) {
 	} else
 		rwmol = RDKit::SmilesToMol(smiles_or_inchi);
 	auto *mol = static_cast<RDKit::ROMol *>(rwmol);
-	auto _    = addIonicChargeLabels(*mol);
+	addIonicChargeLabels(mol);
 	return romol_ptr_t(mol);
 }
 
@@ -120,7 +124,7 @@ void softmax(std::vector<double> &weights, std::vector<double> &probs) {
 	for (auto &prob : probs) { prob /= sum; }
 }
 
-void labelNitroGroup(RDKit::ROMol *mol) {
+void labelNitroGroup(const RDKit::ROMol *mol) {
 	// NOTE this is a context specific solution for nitro group single bond oxygen
 	auto fparams                      = new RDKit::FragCatParams(PI_BOND_FGRPS_PICKLE);
 	const RDKit::MOL_SPTR_VECT &fgrps = fparams->getFuncGroups();
@@ -128,9 +132,9 @@ void labelNitroGroup(RDKit::ROMol *mol) {
 		std::string fg_name;
 		fgrp->getProp("_Name", fg_name);
 
-		for (auto &atom : mol->atoms()) {
-			atom->setProp(fg_name, 0);
-			atom->setProp(fg_name + "Charge", 0);
+		for (auto ai = mol->beginAtoms(); ai != mol->endAtoms(); ++ai) {
+			(*ai)->setProp(fg_name, 0);
+			(*ai)->setProp(fg_name + "Charge", 0);
 		}
 		// The format for each match is (queryAtomIdx, molAtomIdx)
 		std::vector<RDKit::MatchVectType> fgp_matches;
@@ -146,29 +150,31 @@ void labelNitroGroup(RDKit::ROMol *mol) {
 	delete fparams;
 }
 
-unsigned int getValence(const RDKit::Atom &atom) {
+int getValence(const RDKit::Atom *atom) {
 	RDKit::PeriodicTable *pt = RDKit::PeriodicTable::getTable();
-	// Fetch or compute the valence of the atom in the input molecule (we disallow valence changes for now)
-	unsigned int valence     = -1;
-	unsigned int num_val     = pt->getValenceList(atom.getSymbol()).size();
-	int def_val              = pt->getDefaultValence(atom.getSymbol());
+	// Fetch or compute the valence of the atom in the input molecule (we disallow
+	// valence changes for now)
+	int valence              = -1;
+	unsigned int num_val     = pt->getValenceList(atom->getSymbol()).size();
+	int def_val              = pt->getDefaultValence(atom->getSymbol());
 
 	// special case for nitrogroup
 	int on_nitro_group;
-	atom.getProp("NitroGroup", on_nitro_group);
-	if (atom.getSymbol() == "O" && atom.getFormalCharge() == -1 && on_nitro_group) {
+	atom->getProp("NitroGroup", on_nitro_group);
+	if (atom->getSymbol() == "O" && atom->getFormalCharge() == -1 && on_nitro_group) {
 		valence = 1;
 		return valence;
 	}
 	if (num_val == 1 && def_val != -1) {
-		valence = def_val; // Hack to cover many cases - which can otherwise get complicated
+		valence = def_val; // Hack to cover many cases - which can otherwise get
+		                   // complicated
 	} else {
 		// This seems to work in most cases....
-		valence = atom.getExplicitValence() + atom.getImplicitValence() + atom.getNumRadicalElectrons();
-		if (4 - pt->getNouterElecs(atom.getAtomicNum()) > 0) {
-			valence += atom.getFormalCharge();
+		valence = atom->getExplicitValence() + atom->getImplicitValence() + atom->getNumRadicalElectrons();
+		if (4 - pt->getNouterElecs(atom->getAtomicNum()) > 0) {
+			valence += atom->getFormalCharge();
 		} else {
-			valence -= atom.getFormalCharge();
+			valence -= atom->getFormalCharge();
 		}
 	}
 	return valence;

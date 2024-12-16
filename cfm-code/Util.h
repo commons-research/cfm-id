@@ -21,6 +21,7 @@
 #include <GraphMol/ROMol.h>
 #include <boost/shared_ptr.hpp>
 #include <random>
+#include <utility>
 
 typedef boost::shared_ptr<RDKit::ROMol> romol_ptr_t;
 
@@ -41,22 +42,22 @@ class RootedROMol {
 public:
 	RootedROMol() = default;
 	; // Default Constructor
-	RootedROMol(romol_ptr_t a_mol, const RDKit::Atom &a_root) : _mol(std::move(a_mol)), _root(a_root) {};
-	romol_ptr_t _mol;
-	RDKit::Atom _root;
+	RootedROMol(romol_ptr_t a_mol, RDKit::Atom *a_root) : mol(std::move(a_mol)), root(a_root) {};
+	romol_ptr_t mol;
+	RDKit::Atom *root = nullptr;
 };
 
 // Helper function to compute the monoisotopic mass of a molecule
 double getMonoIsotopicMass(const romol_ptr_t &mol);
 
 // Helper function to find an atom with the given label
-const RDKit::Atom *getLabeledAtom(romol_ptr_t mol, const char *label);
+RDKit::Atom *getLabeledAtom(romol_ptr_t mol, const char *label);
 
 // Helper function to check for radical electrons within a molecule
 int moleculeHasSingleRadical(const RDKit::ROMol *romol);
 
 // Helper function to identify and label ionic charges
-int addIonicChargeLabels(RDKit::ROMol &romol);
+int addIonicChargeLabels(const RDKit::ROMol *romol);
 
 // Helper function to alter number of Hs on an atom (accounting for implicit Hs)
 void alterNumHs(RDKit::Atom *atom, int H_diff);
@@ -64,9 +65,9 @@ void alterNumHs(RDKit::Atom *atom, int H_diff);
 romol_ptr_t createMolPtr(const char *smiles_or_inchi);
 
 // Helper function label NirtoGroup
-void labelNitroGroup(const RDKit::ROMol &mol);
+void labelNitroGroup(const RDKit::ROMol *mol);
 // Helper function to get valence
-unsigned int getValence(const RDKit::Atom &atom);
+int getValence(const RDKit::Atom *atom);
 
 /* given log(x) and log(y), compute log(x+y). uses the following identity:
    log(x + y) = log(x) + log(1 + y/x) = log(x) + log(1+exp(log(y)-log(x))) */

@@ -23,31 +23,35 @@ the feature
 // Helper functions for multiple features
 void replaceUncommonWithX(std::string &symbol, bool use_full_symbol_set) {
 
-	// Replace uncommon symbols with X
-	const std::vector<std::string> *ok_symbols = nullptr;
-	if (use_full_symbol_set)
-		ok_symbols = &OKsymbols();
-	else
-		ok_symbols = &OKSymbolsLess();
+    // Replace uncommon symbols with X
+    const std::vector<std::string> *ok_symbols = nullptr;
+    if(use_full_symbol_set)
+        ok_symbols =  &OKsymbols();
+    else
+        ok_symbols = &OKSymbolsLess();
 
-	for (auto &str : *ok_symbols) {
-		if (symbol == str) { return; }
-	}
-	symbol = "X";
+    for (auto & str : *ok_symbols) {
+        if (symbol == str) {
+            return;
+        }
+    }
+    symbol = "X";
 }
 
 // assume last is always "X"
 int getSymbolsIndex(const std::string &symbol, bool use_full_symbol_set) {
-	int index                                  = 0;
-	const std::vector<std::string> *ok_symbols = nullptr;
-	if (use_full_symbol_set)
-		ok_symbols = &OKsymbols();
-	else
-		ok_symbols = &OKSymbolsLess();
+    int index = 0;
+    const std::vector<std::string> *ok_symbols = nullptr;
+    if(use_full_symbol_set)
+        ok_symbols = &OKsymbols();
+    else
+        ok_symbols = &OKSymbolsLess();
 
-	for (auto &str : *ok_symbols) {
-		if (symbol == str) { break; }
-		index++;
-	}
-	return index;
+    for (auto & str : *ok_symbols) {
+        if (symbol == str) {
+            break;
+        }
+        index++;
+    }
+    return index;
 }

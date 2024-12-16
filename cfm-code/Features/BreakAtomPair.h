@@ -20,10 +20,11 @@
 
 class BreakAtomPair : public BreakFeature {
 public:
-	BreakAtomPair() {
-		_size = 37;
-		_name = "BreakAtomPair";
-	};
+    BreakAtomPair() {
+        size = 37;
+        name = "BreakAtomPair";
+    };
 
-	void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+    void
+    compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
 };

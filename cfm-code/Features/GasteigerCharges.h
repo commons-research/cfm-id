@@ -22,12 +22,12 @@ param.cpp.
 class GasteigerCharges : public RootPathFeature {
 public:
 	GasteigerCharges() {
-		_size = 36;
-		_name = "GasteigerCharges";
+		size = 36;
+		name = "GasteigerCharges";
 	};
 
 	void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
 
 private:
-	[[nodiscard]] int discretizeGasteigerCharge(double gc) const;
+	static int discretizeGasteigerCharge(double gc);
 };

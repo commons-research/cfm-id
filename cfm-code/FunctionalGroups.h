@@ -3,7 +3,7 @@
 #
 # FunctionalGroups.h
 #
-# Description: 	Pickle of the RDKit::FragCatParams object containing
+# Description: 	Pickle of the RDKit::FragCatParams object containing 
 #				functional groups to be used in the FunctionalGroups features.
 #
 # Copyright (c) 2015, Felicity Allen

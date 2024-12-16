@@ -20,10 +20,11 @@
 
 class BrokenOrigBondType : public BreakFeature {
 public:
-	BrokenOrigBondType() {
-		_size = 7;
-		_name = "BrokenOrigBondType";
-	};
+    BrokenOrigBondType() {
+        size = 7;
+        name = "BrokenOrigBondType";
+    };
 
-	void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
+    void
+    compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const override;
 };

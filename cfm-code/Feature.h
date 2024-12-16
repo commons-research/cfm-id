@@ -16,85 +16,91 @@
 
 #pragma once
 
-#include "FeatureVector.h"
 #include "Util.h"
+#include "FunctionalGroups.h"
+#include "FeatureVector.h"
 
 #include <GraphMol/FragCatalog/FragCatParams.h>
 
-#include <boost/lexical_cast.hpp>
 #include <boost/ptr_container/ptr_vector.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include <string>
 #include <vector>
+#include <unordered_map>
+#include <iostream>
+#include <fstream>
 
 typedef std::pair<std::string, std::string> symbol_pair_t;
 
 // Base class to compute a feature - all features should inherit from this
 static const std::vector<std::string> &OKsymbols() {
 
-	static std::vector<std::string> x;
-	static bool initialised = false;
+    static std::vector<std::string> x;
+    static bool initialised = false;
 
-	if (!initialised) {
-		x.emplace_back("Br");
-		x.emplace_back("C");
-		x.emplace_back("Cl");
-		x.emplace_back("F");
-		x.emplace_back("I");
-		x.emplace_back("N");
-		x.emplace_back("O");
-		x.emplace_back("P");
-		x.emplace_back("S");
-		x.emplace_back("Se");
-		x.emplace_back("Si");
-		x.emplace_back("X"); // For all other
+    if (!initialised) {
+        x.emplace_back("Br");
+        x.emplace_back("C");
+        x.emplace_back("Cl");
+        x.emplace_back("F");
+        x.emplace_back("I");
+        x.emplace_back("N");
+        x.emplace_back("O");
+        x.emplace_back("P");
+        x.emplace_back("S");
+        x.emplace_back("Se");
+        x.emplace_back("Si");
+        x.emplace_back("X"); // For all other
 
-		initialised = true;
-	}
-	return x;
+        initialised = true;
+    }
+    return x;
 }
 
-static const std::vector<std::string> &OKSymbolsLess() {
+static const std::vector<std::string> & OKSymbolsLess() {
 
-	static std::vector<std::string> x;
-	static bool initialised = false;
+    static std::vector<std::string> x;
+    static bool initialised = false;
 
-	if (!initialised) {
-		x.emplace_back("C");
-		x.emplace_back("N");
-		x.emplace_back("O");
-		x.emplace_back("P");
-		x.emplace_back("S");
-		x.emplace_back("X"); // For all other
+    if (!initialised) {
+        x.emplace_back("C");
+        x.emplace_back("N");
+        x.emplace_back("O");
+        x.emplace_back("P");
+        x.emplace_back("S");
+        x.emplace_back("X"); // For all other
 
-		initialised = true;
-	}
-	return x;
+        initialised = true;
+    }
+    return x;
 }
+
 
 void replaceUncommonWithX(std::string &symbol, bool use_full_symbol_set);
 
 int getSymbolsIndex(const std::string &symbol, bool use_full_symbol_set);
 
 class Feature {
+
+public:
+    unsigned int getSize() const { return size; };
+
+    std::string getName() const { return name; };
+
+    virtual ~Feature() {};
+
 protected:
-	unsigned int _size;
-	std::string _name;
-
-public:
-	[[nodiscard]] unsigned int getSize() const { return _size; };
-
-	[[nodiscard]] std::string getName() const { return _name; };
-
-	virtual ~Feature() = default;
+    unsigned int size;
+    std::string name;
 };
 
-class BreakFeature : public Feature {
+class BreakFeature: public Feature{
 public:
-	virtual void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const;
+    virtual void compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const = 0;
 };
 
-class FragmentFeature : public Feature {
+class FragmentFeature: public Feature{
 public:
-	virtual void compute(FeatureVector &fv, romol_ptr_t precursor_ion) const;
+    virtual void compute(FeatureVector &fv, romol_ptr_t precursor_ion) const = 0;
 };

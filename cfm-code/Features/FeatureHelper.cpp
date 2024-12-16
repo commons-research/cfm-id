@@ -16,19 +16,16 @@ param.cpp.
 # of the cfm source tree.
 #########################################################################*/
 #include "FeatureHelper.h"
-#include "../FunctionalGroups.h"
+
 #include <GraphMol/AtomIterators.h>
 #include <GraphMol/BondIterators.h>
 #include <GraphMol/ForceFieldHelpers/MMFF/AtomTyper.h>
-#include <GraphMol/FragCatalog/FragCatParams.h>
 #include <GraphMol/MolOps.h>
 #include <GraphMol/PartialCharges/GasteigerCharges.h>
 #include <GraphMol/PeriodicTable.h>
 #include <GraphMol/RWMol.h>
 #include <GraphMol/SmilesParse/SmilesParse.h>
 #include <GraphMol/Substruct/SubstructMatch.h>
-#include <GraphMol/inchi.h>
-#include <vector>
 
 void FeatureHelper::initialiseRoots(RDKit::RWMol *rwmol) {
 	RDKit::ROMol::AtomIterator ai;
@@ -49,9 +46,9 @@ void FeatureHelper::labelGasteigers(RDKit::RWMol *rwmol) {
 void FeatureHelper::labelFunctionalGroups(RDKit::RWMol *rwmol, bool extra) {
 	const RDKit::MOL_SPTR_VECT fgrps;
 	if (extra) {
-		const RDKit::MOL_SPTR_VECT &fgrps = _fparams->getFuncGroups();
+		const RDKit::MOL_SPTR_VECT &fgrps = xfparams->getFuncGroups();
 	} else {
-		const RDKit::MOL_SPTR_VECT &fgrps = _xfparams->getFuncGroups();
+		const RDKit::MOL_SPTR_VECT &fgrps = fparams->getFuncGroups();
 	}
 
 	std::vector<std::vector<unsigned int>> atom_fg_idxs(rwmol->getNumAtoms());
@@ -68,9 +65,9 @@ void FeatureHelper::labelFunctionalGroups(RDKit::RWMol *rwmol, bool extra) {
 
 		auto mat_it = fgpMatches.begin();
 		for (; mat_it != fgpMatches.end(); ++mat_it) {
-			for (auto &it : *mat_it) {
-				atom_fg_idxs[it.second].push_back(idx);
-				atom_fg_strs[it.second] += std::to_string(idx) + "|";
+			for (auto it = (*mat_it).begin(); it != (*mat_it).end(); ++it) {
+				atom_fg_idxs[it->second].push_back(idx);
+				atom_fg_strs[it->second] += std::to_string(idx) + "|";
 			}
 		}
 	}

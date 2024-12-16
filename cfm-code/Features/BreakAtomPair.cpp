@@ -19,14 +19,14 @@
 void BreakAtomPair::compute(FeatureVector &fv, const RootedROMol *ion, const RootedROMol *nl) const {
 
 	int ring_break;
-	nl->_mol.get()->getProp("IsRingBreak", ring_break);
+	nl->mol.get()->getProp("IsRingBreak", ring_break);
 
 	// Ion Symbol
-	std::string ion_root_symbol = ion->_root.getSymbol();
+	std::string ion_root_symbol = ion->root->getSymbol();
 	replaceUncommonWithX(ion_root_symbol, false);
 
 	// Neutral Loss Symbol
-	std::string nl_root_symbol = nl->_root.getSymbol();
+	std::string nl_root_symbol = nl->root->getSymbol();
 	replaceUncommonWithX(nl_root_symbol, false);
 
 	// Pairs
