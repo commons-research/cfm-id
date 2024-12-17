@@ -18,6 +18,8 @@ set(BASE_HEADERS
 	Message.h
 	Comparators.h
 	FragmentTreeNode.h
+	ModelBase.h
+	EmModel.h
 )
 set(BASE_SOURCES
     Util.cpp
@@ -38,6 +40,8 @@ set(BASE_SOURCES
     Message.cpp
     Comparators.cpp
     FragmentTreeNode.cpp
+    ModelBase.cpp
+    EmModel.cpp
 )
 
 add_library(cfm-code STATIC ${BASE_HEADERS} ${BASE_SOURCES})  # Include both headers and sources

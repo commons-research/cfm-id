@@ -30,6 +30,19 @@ class ParamFeatureMismatchException : public std::exception {
 };
 
 class Param {
+protected:
+	std::vector<float> weights;
+
+	unsigned int num_energy_levels;
+	std::vector<std::string> feature_list;
+	int expected_num_input_features;
+
+	// Initialisation options
+	virtual void randomUniformInit();
+	virtual void randomNormalInit();
+	void zeroInit();
+	void fullZeroInit();
+
 public:
 	// Constructor to initialise parameter weight size from a feature list
 	Param(std::vector<std::string> a_feature_list, int a_num_energy_levels);
@@ -39,7 +52,7 @@ public:
 	Param(Param &param_instance);
 
 	// Constructor for loading parameters from file
-	explicit Param(std::string &filename);
+	explicit Param(const std::string &filename);
 
 	// Append a set of parameters to the current parameters
 	// Either all energy levels to the next slot (if energy < 0),
@@ -54,7 +67,7 @@ public:
 	virtual float computeTheta(const FeatureVector &fv, int energy);
 
 	// Set the value of a weight
-	void setWeightAtIdx(float value, int index) { weights[index] = value; };
+	void setWeightAtIdx(float value, unsigned int index) { weights[index] = value; };
 
 	// Save parameters to file
 	virtual void saveToFile(std::string &filename);
@@ -94,19 +107,6 @@ public:
 		weights.clear();
 		weights = values;
 	}
-
-protected:
-	std::vector<float> weights;
-
-	unsigned int num_energy_levels;
-	std::vector<std::string> feature_list;
-	int expected_num_input_features;
-
-	// Initialisation options
-	virtual void randomUniformInit();
-	virtual void randomNormalInit();
-	void zeroInit();
-	void fullZeroInit();
 };
 
 #endif // __PARAM_H__

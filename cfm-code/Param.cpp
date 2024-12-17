@@ -225,7 +225,7 @@ void Param::saveToFile(std::string &filename) {
 	}
 }
 
-Param::Param(std::string &filename) { readFromFile(filename); }
+Param::Param(const std::string &filename) { readFromFile(filename); }
 
 void Param::readFromFile(const std::string &filename) {
 
