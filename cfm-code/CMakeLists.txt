@@ -15,9 +15,9 @@ set(BASE_HEADERS
 	NNParam.h
 	MspReader.h
 	MolData.h
-	ModelBase.h
-	Comms.h
-	EmModel.h
+	Message.h
+	Comparators.h
+	FragmentTreeNode.h
 )
 set(BASE_SOURCES
     Util.cpp
@@ -35,9 +35,9 @@ set(BASE_SOURCES
     NNParam.cpp
     MspReader.cpp
     MolData.cpp
-    ModelBase.cpp
-    Comms.cpp
-    EmModel.cpp
+    Message.cpp
+    Comparators.cpp
+    FragmentTreeNode.cpp
 )
 
 add_library(cfm-code STATIC ${BASE_HEADERS} ${BASE_SOURCES})  # Include both headers and sources

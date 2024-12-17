@@ -554,6 +554,7 @@ double EmModel::updateParametersGradientAscent(std::vector<MolData> &data, suft_
 			int molidx       = 0;
 
 			std::fill(grads.begin(), grads.end(), 0.0);
+#pragma omp parallel for reduction(+
 			for (auto &mol_it : data) {
 				if (minibatch_flags[molidx] == batch_idx && mol_it.getGroup() != validation_group) {
 					// so now it should not crash anymore
