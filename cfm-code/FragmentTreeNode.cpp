@@ -503,7 +503,7 @@ std::pair<int, int> FragmentTreeNode::findChargeLocation(RDKit::RWMol &rwmol, in
 		RDKit::ROMol::BondIterator bi;
 		for (bi = rwmol.beginBonds(); bi != rwmol.endBonds(); ++bi) {
 			//(Note: We assume here that any broken bonds have been removed beforehand so we don't check for
-			// broken-ness).
+			//broken-ness).
 			int fragidx;
 			(*bi)->getBeginAtom()->getProp("FragIdx", fragidx);
 			if (fragidx != charge_side) continue;
@@ -1041,7 +1041,7 @@ void FragmentTreeNode::applyBreak(Break &brk, int ionic_allocation_idx) {
 	}
 }
 
-void FragmentTreeNode::undoBreak(Break &brk, int ionic_allocation_idx) const {
+void FragmentTreeNode::undoBreak(Break &brk, int ionic_allocation_idx) {
 
 	// Label the broken bond and root atoms
 	if (brk.isHydrogenOnlyBreak()) {
@@ -1181,7 +1181,7 @@ std::pair<int, int> FragmentTreeNode::computeOrigFreeElectronsPerFrag() {
 	return output;
 }
 
-void FragmentTreeNode::createChildIonElectronLocRecord(std::vector<int> &child_e_loc, const romol_ptr_t &childmol) {
+void FragmentTreeNode::createChildIonElectronLocRecord(std::vector<int> &child_e_loc, romol_ptr_t childmol) {
 
 	child_e_loc.resize(childmol.get()->getNumAtoms());
 	RDKit::ROMol::AtomIterator ait = childmol.get()->beginAtoms();

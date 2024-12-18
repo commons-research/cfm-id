@@ -158,7 +158,7 @@ static const int USE_DIFFERENCE_SAMPLING_BFS    = 4;
 
 // Configuration
 struct config_t {
-	unsigned int num_threads;
+	// unsigned int num_threads;
 
 	// Fragment Graph Configuration
 	int fg_depth;

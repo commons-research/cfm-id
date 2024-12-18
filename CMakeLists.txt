@@ -30,19 +30,21 @@ include_directories(${Boost_INCLUDE_DIRS})
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 
-#include(ExternalProject)
-#set(EXTERNAL_INSTALL_LOCATION ${CMAKE_SOURCE_DIR}/rdkit)
-#ExternalProject_Add(RDKit
-#		PREFIX ${EXTERNAL_INSTALL_LOCATION}
-#		GIT_REPOSITORY https://github.com/rdkit/rdkit
-#		CMAKE_ARGS -DRDK_BUILD_PYTHON_WRAPPERS=OFF -DRDK_BUILD_INCHI_SUPPORT=ON
-#)
-#include_directories(${EXTERNAL_INSTALL_LOCATION}/src/RDKit/Code)
-#include_directories(${EXTERNAL_INSTALL_LOCATION}/src/RDKit/External)
-#link_directories(${EXTERNAL_INSTALL_LOCATION}/src/RDKit-build/lib)
-# We actually include rdkit from brew
-include_directories(/opt/homebrew/Cellar/rdkit/2024.09.3_1/include/rdkit)
-link_directories(/opt/homebrew/Cellar/rdkit/2024.09.3_1/lib)
+#include cmake finds
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+# RDKit
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR})
+include(FindRDKit)
+
+if (RDKIT_FOUND)
+    include_directories(${RDKIT_INCLUDE_DIR} ${RDKIT_INCLUDE_EXT_DIR})
+    link_directories(${RDKIT_LIBRARY_DIR})
+else ()
+    message(STATUS "RDKIT_INCLUDE_DIR ${RDKIT_INCLUDE_DIR}")
+    message(STATUS "RDKIT_INCLUDE_DIR ${RDKIT_INCLUDE_EXT_DIR}")
+    message(STATUS "RDKIT_INCLUDE_DIR ${RDKIT_LIBRARIES}")
+    message(FATAL_ERROR "Could not find RDKit")
+endif ()
 
 # LPSolve
 set(LPSOLVE_INCLUDE_DIR "" CACHE STRING "Where are the LPSolve headers?")
@@ -88,11 +90,23 @@ else()
 endif (NOT LPSOLVE_LIBRARY)
 
 include_directories(${LPSOLVE_LIBRARY_HEADERS})
-link_directories(LPSOLVE_LIBRARY)
-mark_as_advanced(LPSOLVE_LIBRARY)
+link_directories(${LPSOLVE_LIBRARY_HEADERS})
+mark_as_advanced(${LPSOLVE_LIBRARY})
 
 find_package(Threads)
 find_package(OpenMP)
 
+set(CFM_OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/bin CACHE STRING "Where do you want the output binaries to install to?")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+
 #Common Library
 add_subdirectory(cfm-code)
+
+#Executable for generating fragmentation graphs
+include_directories(cfm-code)
+
+#Spectrum Predicter
+add_subdirectory(cfm-predict)
+
+add_subdirectory(cfm-boost-test)

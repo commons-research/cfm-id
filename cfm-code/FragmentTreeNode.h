@@ -111,7 +111,7 @@ public:
 	void applyBreak(Break &brk, int ionic_allocation_idx);
 
 	// Undo any changes made during applyBreak
-	void undoBreak(Break &brk, int ionic_allocation_idx) const;
+	void undoBreak(Break &brk, int ionic_allocation_idx);
 
 	// For an already applied break, generate the possible child fragments
 	// and add them to the children field in the node
@@ -191,7 +191,7 @@ private:
 	// radical?
 	void labelIonProperties();
 
-	void createChildIonElectronLocRecord(std::vector<int> &child_e_loc, const romol_ptr_t &childmol);
+	void createChildIonElectronLocRecord(std::vector<int> &child_e_loc, romol_ptr_t childmol);
 
 	// Static Utility functions:
 	static int findAtomChargeLocationNSOC(RDKit::RWMol &rwmol, int charge_side, bool is_negative);

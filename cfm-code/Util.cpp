@@ -78,17 +78,16 @@ int moleculeHasSingleRadical(const RDKit::ROMol *romol) {
 	return (num_radicals == 1);
 }
 
-int addIonicChargeLabels(const RDKit::ROMol *romol) {
+int addIonicChargeLabels(RDKit::ROMol *romol) {
 
 	std::vector<int> mapping;
 	unsigned int num_frags = RDKit::MolOps::getMolFrags(*romol, mapping);
 
-	RDKit::ROMol::ConstAtomIterator ai;
 	int num_ionic = 0;
-	for (ai = romol->beginAtoms(); ai != romol->endAtoms(); ++ai) {
-		(*ai)->setProp("IonicFragmentCharge", 0);
-		if (num_frags > 1 && (*ai)->getDegree() == 0 && (*ai)->getFormalCharge() != 0) {
-			(*ai)->setProp("IonicFragmentCharge", (*ai)->getFormalCharge());
+	for (auto &ai : romol->atoms()) {
+		ai->setProp("IonicFragmentCharge", 0);
+		if (num_frags > 1 && ai->getDegree() == 0 && ai->getFormalCharge() != 0) {
+			ai->setProp("IonicFragmentCharge", ai->getFormalCharge());
 			num_ionic++;
 		}
 	}
@@ -124,7 +123,7 @@ void softmax(std::vector<double> &weights, std::vector<double> &probs) {
 	for (auto &prob : probs) { prob /= sum; }
 }
 
-void labelNitroGroup(const RDKit::ROMol *mol) {
+void labelNitroGroup(RDKit::ROMol *mol) {
 	// NOTE this is a context specific solution for nitro group single bond oxygen
 	auto fparams                      = new RDKit::FragCatParams(PI_BOND_FGRPS_PICKLE);
 	const RDKit::MOL_SPTR_VECT &fgrps = fparams->getFuncGroups();

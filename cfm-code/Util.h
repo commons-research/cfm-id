@@ -51,13 +51,13 @@ public:
 double getMonoIsotopicMass(const romol_ptr_t &mol);
 
 // Helper function to find an atom with the given label
-RDKit::Atom *getLabeledAtom(romol_ptr_t mol, const char *label);
+RDKit::Atom *getLabeledAtom(const romol_ptr_t &mol, const char *label);
 
 // Helper function to check for radical electrons within a molecule
 int moleculeHasSingleRadical(const RDKit::ROMol *romol);
 
 // Helper function to identify and label ionic charges
-int addIonicChargeLabels(const RDKit::ROMol *romol);
+int addIonicChargeLabels(RDKit::ROMol *romol);
 
 // Helper function to alter number of Hs on an atom (accounting for implicit Hs)
 void alterNumHs(RDKit::Atom *atom, int H_diff);
@@ -65,7 +65,7 @@ void alterNumHs(RDKit::Atom *atom, int H_diff);
 romol_ptr_t createMolPtr(const char *smiles_or_inchi);
 
 // Helper function label NirtoGroup
-void labelNitroGroup(const RDKit::ROMol *mol);
+void labelNitroGroup(RDKit::ROMol *mol);
 // Helper function to get valence
 int getValence(const RDKit::Atom *atom);
 
