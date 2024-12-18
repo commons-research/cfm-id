@@ -58,7 +58,6 @@ public:
 protected:
 	// timer
 	std::chrono::system_clock::time_point start_time;
-	std::set<unsigned int> used_idxs;
 
 	// Further virtual functions
 	virtual void computeThetas(MolData *moldata);

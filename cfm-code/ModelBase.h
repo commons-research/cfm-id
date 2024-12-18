@@ -30,6 +30,7 @@ protected:
 	FeatureCalculator *fc;
 	// The current parameters
 	boost::shared_ptr<Param> param;
+	std::set<unsigned int> used_idxs;
 
 	// Configuration data
 	config_t *cfg;

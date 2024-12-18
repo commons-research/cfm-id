@@ -1,47 +1,57 @@
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/Features FEATURES_SRC_DIR)
 set(BASE_HEADERS
-	Version.h
-	Util.h
-	FunctionalGroups.h
-	Config.h
-	Spectrum.h
-	MILP.h
-	Isotope.h
-	FeatureVector.h
-	Feature.h
-	FeatureCalculator.h
-	Solver.h
-	Param.h
-	NNParam.h
-	MspReader.h
-	MolData.h
-	Message.h
-	Comparators.h
-	FragmentTreeNode.h
-	ModelBase.h
-	EmModel.h
+    Comparators.h
+    Config.h
+    EmModel.h
+    EmNNModel.h
+    Feature.h
+    FeatureCalculator.h
+    FeatureVector.h
+    FragmentGraph.h
+    FragmentGraphGenerator.h
+    FragmentTreeNode.h
+    FunctionalGroups.h
+    Identifier.h
+    Inference.h
+    Isotope.h
+    MILP.h
+    Message.h
+    ModelBase.h
+    MolData.h
+    MspReader.h
+    NNParam.h
+    Param.h
+    Solver.h
+    Spectrum.h
+    Util.h
+    Version.h
 )
 set(BASE_SOURCES
-    Util.cpp
-    FunctionalGroups.cpp
+    ${FEATURES_SRC_DIR}
+    Comparators.cpp
     Config.cpp
-    Spectrum.cpp
-    MILP.cpp
-    Isotope.cpp
-    FeatureVector.cpp
+    EmModel.cpp
+    EmNNModel.cpp
     Feature.cpp
     FeatureCalculator.cpp
-    ${FEATURES_SRC_DIR}
-    Solver.cpp
-    Param.cpp
-    NNParam.cpp
-    MspReader.cpp
-    MolData.cpp
-    Message.cpp
-    Comparators.cpp
+    FeatureVector.cpp
+    FragmentGraph.cpp
+    FragmentGraphGenerator.cpp
     FragmentTreeNode.cpp
+    FunctionalGroups.cpp
+    Identifier.cpp
+    Inference.cpp
+    Isotope.cpp
+    MILP.cpp
+    Message.cpp
     ModelBase.cpp
-    EmModel.cpp
+    MolData.cpp
+    MspReader.cpp
+    NNParam.cpp
+    Param.cpp
+    Solver.cpp
+    Spectrum.cpp
+    Util.cpp
 )
 
 add_library(cfm-code STATIC ${BASE_HEADERS} ${BASE_SOURCES})  # Include both headers and sources
