@@ -38,7 +38,7 @@ public:
 	// Constructor
 	// Note: To include the group in the status filename, include _GRP_ in the name
 	EmModel(config_t *a_cfg, FeatureCalculator *an_fc, std::string &a_status_filename,
-	        const std::string &initial_params_filename = "");
+	        std::string initial_params_filename = "");
 
 	~EmModel() = default;
 
@@ -85,7 +85,7 @@ protected:
 	// nullptr means do not update grads
 	virtual double getRegularizationTerm(unsigned int energy);
 
-	virtual void updateGradientForRegularizationTerm(double *grads, unsigned int energy);
+	virtual void updateGradientForRegularizationTerm(float *grads, unsigned int energy);
 
 	void getSubSampledTransitions(MolData &moldata, int sampling_method, unsigned int energy,
 	                              std::set<int> &selected_trans_id) const;

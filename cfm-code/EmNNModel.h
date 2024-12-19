@@ -43,7 +43,7 @@ public:
 
 	double getRegularizationTerm(unsigned int energy) override;
 
-	void updateGradientForRegularizationTerm(double *grads, unsigned int energy) override;
+	void updateGradientForRegularizationTerm(float *grads, unsigned int energy) override;
 
 	void writeParamsToFile(std::string &filename) override;
 

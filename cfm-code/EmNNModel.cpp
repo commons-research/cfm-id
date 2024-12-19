@@ -199,7 +199,7 @@ double EmNNModel::computeLogLikelihoodLoss(int molidx, MolData &moldata, suft_co
 	return Q;
 }
 
-void EmNNModel::updateGradientForRegularizationTerm(double *grads, unsigned int energy) {
+void EmNNModel::updateGradientForRegularizationTerm(float *grads, unsigned int energy) {
 
 	auto it = this->used_idxs.begin();
 	for (; it != this->used_idxs.end(); ++it) {

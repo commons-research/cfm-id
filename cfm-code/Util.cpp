@@ -32,11 +32,11 @@ double getMassTol(double abs_tol, double ppm_tol, double mass) {
 	return mass_tol;
 }
 
-double getMonoIsotopicMass(const romol_ptr_t &mol) {
+double getMonoIsotopicMass(const romol_ptr_t mol) {
 
 	RDKit::PeriodicTable *pt = RDKit::PeriodicTable::getTable();
 	double mass              = 0.0;
-	unsigned int natoms      = mol->getNumAtoms();
+	int natoms               = mol->getNumAtoms();
 	for (int i = 0; i < natoms; i++) {
 		RDKit::Atom *atom  = mol->getAtomWithIdx(i);
 		std::string symbol = atom->getSymbol();
@@ -53,7 +53,7 @@ double getMonoIsotopicMass(const romol_ptr_t &mol) {
 }
 
 // Helper function to find an atom with the given label
-RDKit::Atom *getLabeledAtom(const romol_ptr_t &mol, const char *label) {
+RDKit::Atom *getLabeledAtom(romol_ptr_t mol, const char *label) {
 	RDKit::ROMol::AtomIterator ai;
 	int root = 0;
 	for (ai = mol.get()->beginAtoms(); ai != mol.get()->endAtoms(); ++ai) {
@@ -68,7 +68,7 @@ RDKit::Atom *getLabeledAtom(const romol_ptr_t &mol, const char *label) {
 
 int moleculeHasSingleRadical(const RDKit::ROMol *romol) {
 
-	unsigned int num_radicals = 0;
+	int num_radicals = 0;
 	for (RDKit::ROMol::ConstAtomIterator ait = romol->beginAtoms(); ait != romol->endAtoms(); ++ait) {
 		int ionic_frag_q;
 		(*ait)->getProp("IonicFragmentCharge", ionic_frag_q);
@@ -78,16 +78,17 @@ int moleculeHasSingleRadical(const RDKit::ROMol *romol) {
 	return (num_radicals == 1);
 }
 
-int addIonicChargeLabels(RDKit::ROMol *romol) {
+int addIonicChargeLabels(const RDKit::ROMol *romol) {
 
 	std::vector<int> mapping;
-	unsigned int num_frags = RDKit::MolOps::getMolFrags(*romol, mapping);
+	int num_frags = RDKit::MolOps::getMolFrags(*romol, mapping);
 
+	RDKit::ROMol::ConstAtomIterator ai;
 	int num_ionic = 0;
-	for (auto &ai : romol->atoms()) {
-		ai->setProp("IonicFragmentCharge", 0);
-		if (num_frags > 1 && ai->getDegree() == 0 && ai->getFormalCharge() != 0) {
-			ai->setProp("IonicFragmentCharge", ai->getFormalCharge());
+	for (ai = romol->beginAtoms(); ai != romol->endAtoms(); ++ai) {
+		(*ai)->setProp("IonicFragmentCharge", 0);
+		if (num_frags > 1 && (*ai)->getDegree() == 0 && (*ai)->getFormalCharge() != 0) {
+			(*ai)->setProp("IonicFragmentCharge", (*ai)->getFormalCharge());
 			num_ionic++;
 		}
 	}
@@ -95,9 +96,9 @@ int addIonicChargeLabels(RDKit::ROMol *romol) {
 }
 
 void alterNumHs(RDKit::Atom *atom, int H_diff) {
-	unsigned int nHs = atom->getTotalNumHs();
+	int nHs = atom->getTotalNumHs();
 	atom->setNoImplicit(true);
-	if (atom->getAtomicNum() != 6 && nHs !=4){atom->setNumExplicitHs(nHs + H_diff);}
+	atom->setNumExplicitHs(nHs + H_diff);
 }
 
 romol_ptr_t createMolPtr(const char *smiles_or_inchi) {
@@ -123,7 +124,7 @@ void softmax(std::vector<double> &weights, std::vector<double> &probs) {
 	for (auto &prob : probs) { prob /= sum; }
 }
 
-void labelNitroGroup(RDKit::ROMol *mol) {
+void labelNitroGroup(const RDKit::ROMol *mol) {
 	// NOTE this is a context specific solution for nitro group single bond oxygen
 	auto fparams                      = new RDKit::FragCatParams(PI_BOND_FGRPS_PICKLE);
 	const RDKit::MOL_SPTR_VECT &fgrps = fparams->getFuncGroups();
@@ -151,8 +152,7 @@ void labelNitroGroup(RDKit::ROMol *mol) {
 
 int getValence(const RDKit::Atom *atom) {
 	RDKit::PeriodicTable *pt = RDKit::PeriodicTable::getTable();
-	// Fetch or compute the valence of the atom in the input molecule (we disallow
-	// valence changes for now)
+	// Fetch or compute the valence of the atom in the input molecule (we disallow valence changes for now)
 	int valence              = -1;
 	unsigned int num_val     = pt->getValenceList(atom->getSymbol()).size();
 	int def_val              = pt->getDefaultValence(atom->getSymbol());
@@ -165,8 +165,7 @@ int getValence(const RDKit::Atom *atom) {
 		return valence;
 	}
 	if (num_val == 1 && def_val != -1) {
-		valence = def_val; // Hack to cover many cases - which can otherwise get
-		                   // complicated
+		valence = def_val; // Hack to cover many cases - which can otherwise get complicated
 	} else {
 		// This seems to work in most cases....
 		valence = atom->getExplicitValence() + atom->getImplicitValence() + atom->getNumRadicalElectrons();
