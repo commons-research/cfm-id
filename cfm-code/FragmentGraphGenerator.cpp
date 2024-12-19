@@ -264,8 +264,7 @@ void LikelyFragmentGraphGenerator::compute(FragmentTreeNode &node, int remaining
 	if (alreadyComputed(id, remaining_depth)) { return; }
 
 	// probability offset, we don't need to run again, unless it is persisting
-	// if (alreadyComputedProb(id, parent_log_prob))
-	//     return;
+	if (alreadyComputedProb(id, parent_log_prob)) return;
 
 	// Important height trick
 	if (current_graph->getHeight() < (node.depth + 1)) current_graph->setHeight(node.depth + 1);
