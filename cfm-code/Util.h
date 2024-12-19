@@ -42,7 +42,7 @@ class RootedROMol {
 public:
 	RootedROMol() = default;
 	; // Default Constructor
-	RootedROMol(romol_ptr_t a_mol, RDKit::Atom *a_root) : mol(std::move(a_mol)), root(a_root) {};
+	RootedROMol(romol_ptr_t a_mol, RDKit::Atom *a_root) : mol(a_mol), root(a_root) {};
 	romol_ptr_t mol;
 	RDKit::Atom *root = nullptr;
 };

@@ -8,3 +8,6 @@ cmake ..  -DINCLUDE_TESTS=ON -DINCLUDE_TRAIN=ON \
         -DCMAKE_CXX_STANDARD=20 \
         -DCMAKE_BUILD_TYPE=Release
 ```
+
+
+problem is at line 795 of FragmentTreeNode.cpp where the calculated valence of the carbon is greater than allowed.

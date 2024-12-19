@@ -97,7 +97,7 @@ int addIonicChargeLabels(RDKit::ROMol *romol) {
 void alterNumHs(RDKit::Atom *atom, int H_diff) {
 	unsigned int nHs = atom->getTotalNumHs();
 	atom->setNoImplicit(true);
-	atom->setNumExplicitHs(nHs + H_diff);
+	if (atom->getAtomicNum() != 6 && nHs !=4){atom->setNumExplicitHs(nHs + H_diff);}
 }
 
 romol_ptr_t createMolPtr(const char *smiles_or_inchi) {

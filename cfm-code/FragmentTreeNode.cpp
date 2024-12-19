@@ -503,7 +503,7 @@ std::pair<int, int> FragmentTreeNode::findChargeLocation(RDKit::RWMol &rwmol, in
 		RDKit::ROMol::BondIterator bi;
 		for (bi = rwmol.beginBonds(); bi != rwmol.endBonds(); ++bi) {
 			//(Note: We assume here that any broken bonds have been removed beforehand so we don't check for
-			//broken-ness).
+			// broken-ness).
 			int fragidx;
 			(*bi)->getBeginAtom()->getProp("FragIdx", fragidx);
 			if (fragidx != charge_side) continue;
@@ -769,7 +769,7 @@ void FragmentTreeNode::assignChargeAndRadical(RDKit::RWMol &rwmol, int charge_id
 	} else {
 		atom->setFormalCharge(1);
 		if (radical_idx < 0)
-			alterNumHs(atom, +1); // Even+[H+] -> Even+[H+] + NL
+			alterNumHs(atom, 1); // Even+[H+] -> Even+[H+] + NL
 		else {
 			RDKit::Atom *rad_atom = rwmol.getAtomWithIdx(radical_idx);
 			rad_atom->setNumRadicalElectrons(1);
@@ -790,7 +790,10 @@ void FragmentTreeNode::assignChargeAndRadical(RDKit::RWMol &rwmol, int charge_id
 			rad_atom->calcExplicitValence();
 		}
 	}
+	int valence = atom->getExplicitValence();
+	std::cout << "Atom : " << atom->getSymbol() << " has valence : " << valence << std::endl;
 	atom->calcExplicitValence();
+	std::cout << atom->getExplicitValence() << std::endl;
 	RDKit::MolOps::sanitizeMol(rwmol);
 	RDKit::MolOps::Kekulize(rwmol);
 }
