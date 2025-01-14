@@ -151,13 +151,15 @@ else ()
                     HINTS ${RDKIT_LIBRARY_DIR})
             find_library(FRAGCAT NAMES FragCatalog RDKitFragCatalog
                     HINTS ${RDKIT_LIBRARY_DIR})
+            find_library(CHEMREACTIONS NAMES ChemReactions RDKitChemReactions
+                    HINTS ${RDKIT_LIBRARY_DIR})
 
 
             set(RDKIT_LIBRARIES ${FILEPARSERS_LIB} ${SMILESPARSE_LIB}
                     ${DEPICTOR_LIB} ${CHEMTRANS_LIB} ${GRAPHMOL_LIB} ${RDGEOMETRYLIB_LIB}
                     ${RDGENERAL_LIB} ${SUBSTRUCT_LIB} ${GASTEIGER_LIB}
                     ${DATASTRUCT_LIB} ${SUBGRAPH_LIB} ${FINGERPRINT_LIB}
-                    ${INCHI_LIB} ${RDINCHI_LIB} ${DESCIPTORS_LIB} ${OPT} ${FF} ${FFHELP} ${CATALOG} ${FRAGCAT})
+                    ${INCHI_LIB} ${RDINCHI_LIB} ${DESCIPTORS_LIB} ${OPT} ${FF} ${FFHELP} ${CATALOG} ${FRAGCAT} ${CHEMREACTIONS})
         endif ()
         if (RDKIT_LIBRARIES)
             message(STATUS "Found RDKit library files at ${RDKIT_LIBRARIES}")

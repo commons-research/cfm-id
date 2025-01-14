@@ -312,7 +312,7 @@ double EmModel::trainModel(std::vector<MolData> &molDataSet, int group, std::str
 #pragma omp parallel for reduction(+ : max_pob_dice, max_pob_dp, max_pob_precision, max_pob_recall, num_training_mols, \
                                        num_val_mols)
 	for (auto &mol_data : molDataSet) {
-#pragma omp critial
+#pragma omp critical
 		if (mol_data.hasEmptySpectrum(energy_level) && mol_data.getGroup() != validation_group)
 			std::cout << "Warning: No peaks with explanatory fragment found for " << mol_data.getId()
 			          << ", ignoring this input molecule." << std::endl;

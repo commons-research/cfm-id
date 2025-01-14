@@ -17,7 +17,7 @@
 #########################################################################*/
 
 #include "FragmentGraphGenerator.h"
-
+#include "Util.h"
 #include <GraphMol/AtomIterators.h>
 #include <GraphMol/BondIterators.h>
 #include <GraphMol/MolOps.h>
@@ -96,7 +96,6 @@ FragmentTreeNode *FragmentGraphGenerator::createStartNode(std::string &smiles_or
 		(*ai)->setProp("CurrentRingBreakRoot", 0);
 		// set origValence
 		auto orig_val = getValence(*ai);
-		// std::cout << "[DEBUG][ID " <<  (*ai)->getIdx() << "]" << (*ai)->getSymbol() << " " << orig_val << std::endl;
 		(*ai)->setProp("OrigValence", orig_val);
 	}
 	int num_ionic = addIonicChargeLabels(rwmol);
@@ -278,7 +277,6 @@ void LikelyFragmentGraphGenerator::compute(FragmentTreeNode &node, int remaining
 		h_loss_allowed = !(current_graph->includesHLossesPrecursorOnly()) && current_graph->includesHLosses();
 
 	node.generateBreaks(breaks, h_loss_allowed, current_graph->allowCyclization());
-
 	std::vector<Break>::iterator it = breaks.begin();
 
 	std::vector<int> children_remaining_ring_breaks;
@@ -379,8 +377,8 @@ void FragmentGraphGenerator::applyIonization(RDKit::RWMol *rwmol, int ionization
 		}
 		try {
 			FragmentTreeNode::assignChargeAndRadical(*rwmol, qidx_ridx.first, qidx_ridx.second, is_neg);
-			RDKit::MolOps::sanitizeMol(
-			    *rwmol); // Re-sanitize...sometimes RDKit only throws the exception the second time...
+			// RDKit::MolOps::sanitizeMol(
+			// *rwmol); // Re-sanitize...sometimes RDKit only throws the exception the second time...
 		} catch (RDKit::MolSanitizeException e) {
 			std::cerr << "Could not ionize - sanitization failure" << std::endl;
 			throw IonizationException();

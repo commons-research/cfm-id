@@ -124,7 +124,9 @@ void MolData::computeLikelyFragmentGraphAndSetThetas(LikelyFragmentGraphGenerato
 	// vectors
 	fg                          = fgen.createNewGraph(cfg);
 	FragmentTreeNode *startnode = fgen.createStartNode(smiles_or_inchi, cfg->ionization_mode);
+	std::cout << "Computing likely fragment graph for " << getId() << " " << getSmilesOrInchi() << std::endl;
 	fgen.compute(*startnode, cfg->fg_depth, -1, 0.0, cfg->max_ring_breaks);
+	std::cout << "Done computing likely fragment graph for " << getId() << " " << getSmilesOrInchi() << std::endl;
 	if (!cfg->allow_frag_detours) fg->removeDetours();
 
 	delete startnode;

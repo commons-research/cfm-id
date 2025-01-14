@@ -69,8 +69,16 @@ else()
     MESSAGE(STATUS "Found LPSOLVE Headers at ${LPSOLVE_LIBRARY_HEADERS}")
 endif (NOT LPSOLVE_LIBRARY_HEADERS)
 
+include(FetchContent)
+FetchContent_Declare(coretools
+        GIT_REPOSITORY https://bitbucket.org/wegmannlab/coretools.git
+        GIT_TAG madleina/interface_stattools
+        SOURCE_DIR "${CMAKE_SOURCE_DIR}/coretools"
+)
+FetchContent_MakeAvailable(coretools)
+target_link_libraries(coretools)
 
- find_library(LPSOLVE_LIBRARY lpsolve55 PATHS
+find_library(LPSOLVE_LIBRARY lpsolve55 PATHS
                          ${LPSOLVE_LIBRARY_DIR}
                         /usr/lib
                         /usr/lib/lpsolve

@@ -16,12 +16,14 @@
 
 #include "Util.h"
 #include "FunctionalGroups.h"
+#include "coretools/devtools.h"
 #include <GraphMol/AtomIterators.h>
 #include <GraphMol/FragCatalog/FragCatParams.h>
 #include <GraphMol/MolOps.h>
 #include <GraphMol/PeriodicTable.h>
 #include <GraphMol/RWMol.h>
 #include <GraphMol/SmilesParse/SmilesParse.h>
+#include <GraphMol/SmilesParse/SmilesWrite.h>
 #include <GraphMol/Substruct/SubstructMatch.h>
 #include <GraphMol/inchi.h>
 #include <vector>
@@ -99,6 +101,35 @@ void alterNumHs(RDKit::Atom *atom, int H_diff) {
 	int nHs = atom->getTotalNumHs();
 	atom->setNoImplicit(true);
 	atom->setNumExplicitHs(nHs + H_diff);
+}
+
+void remove_extra_Hs(RDKit::RWMol &mol) {
+	std::cout << "[DEBUG][remove_extra_Hs][before] " << RDKit::MolToSmiles(mol) << std::endl;
+	for (auto atom : mol.atoms()) {
+		std::vector<double> bonds_prop;
+		for (auto bond : mol.bonds()) {
+			if (bond->getBeginAtomIdx() == atom->getIdx() || bond->getEndAtomIdx() == atom->getIdx()) {
+				bonds_prop.push_back(bond->getBondTypeAsDouble());
+			}
+		}
+
+		// we print the vector
+		OUT(bonds_prop);
+
+		int defaultValence  = RDKit::PeriodicTable::getTable()->getDefaultValence(atom->getSymbol());
+		int numExplicitHs   = atom->getNumExplicitHs();
+		int numFormalCharge = atom->getFormalCharge();
+		int actualValence   = atom->calcExplicitValence(false);
+
+		std::cout << "[DEBUG][remove_extra_Hs][numExplicitHs] " << atom->getIdx() << " " << numExplicitHs << std::endl;
+
+		if (actualValence > defaultValence) {
+			if (numExplicitHs - (actualValence - defaultValence) >= 0) {
+				atom->setNumExplicitHs(numExplicitHs - (actualValence - defaultValence));
+			}
+		}
+	}
+	std::cout << "[DEBUG][remove_extra_Hs][after] " << RDKit::MolToSmiles(mol) << std::endl;
 }
 
 romol_ptr_t createMolPtr(const char *smiles_or_inchi) {
