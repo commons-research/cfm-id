@@ -16,7 +16,6 @@
 
 #include "Util.h"
 #include "FunctionalGroups.h"
-#include "coretools/devtools.h"
 #include <GraphMol/AtomIterators.h>
 #include <GraphMol/FragCatalog/FragCatParams.h>
 #include <GraphMol/MolOps.h>
@@ -112,9 +111,6 @@ void remove_extra_Hs(RDKit::RWMol &mol) {
 				bonds_prop.push_back(bond->getBondTypeAsDouble());
 			}
 		}
-
-		// we print the vector
-		OUT(bonds_prop);
 
 		int defaultValence  = RDKit::PeriodicTable::getTable()->getDefaultValence(atom->getSymbol());
 		int numExplicitHs   = atom->getNumExplicitHs();

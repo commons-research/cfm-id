@@ -165,7 +165,7 @@ double EmModel::updateParametersGradientAscent(std::vector<MolData> &data, suft_
 			for (int i = 0; i < param->getNumWeightsPerEnergyLevel(); ++i) { this->used_idxs.insert(grad_offset + i); }
 		}
 
-#pragma omp parallel for
+#pragma omp parallel for num_threads(NUMBER_OF_THREADS)
 		for (size_t molidx = 0; molidx < data.size(); ++molidx) {
 			MolData &mol = data[molidx];
 			if (mol.getGroup() != validation_group) {
@@ -211,7 +211,7 @@ double EmModel::updateParametersGradientAscent(std::vector<MolData> &data, suft_
 
 			std::fill(grads.begin(), grads.end(), 0.0);
 
-#pragma omp parallel for reduction(+ : num_trans)
+#pragma omp parallel for reduction(+ : num_trans) num_threads(NUMBER_OF_THREADS)
 			for (int molidx = 0; molidx < data.size(); ++molidx) {
 				auto &mol_it = data[molidx];
 
@@ -310,7 +310,7 @@ double EmModel::trainModel(std::vector<MolData> &molDataSet, int group, std::str
 	double max_pob_dice = 0.0, max_pob_dp = 0.0, max_pob_precision = 0.0, max_pob_recall = 0.0;
 
 #pragma omp parallel for reduction(+ : max_pob_dice, max_pob_dp, max_pob_precision, max_pob_recall, num_training_mols, \
-                                       num_val_mols)
+                                       num_val_mols) num_threads(NUMBER_OF_THREADS)
 	for (auto &mol_data : molDataSet) {
 #pragma omp critical
 		if (mol_data.hasEmptySpectrum(energy_level) && mol_data.getGroup() != validation_group)
@@ -353,7 +353,7 @@ double EmModel::trainModel(std::vector<MolData> &molDataSet, int group, std::str
 
 		auto before = std::chrono::system_clock::now();
 
-#pragma omp parallel for
+#pragma omp parallel for num_threads(NUMBER_OF_THREADS)
 		for (int molidx = 0; molidx < molDataSet.size(); ++molidx) {
 			auto &mol = molDataSet[molidx];
 			if (!mol.hasComputedGraph()) { continue; }
@@ -400,7 +400,7 @@ double EmModel::trainModel(std::vector<MolData> &molDataSet, int group, std::str
 
 #pragma omp parallel for reduction(+ : val_q, train_dice, train_dp, train_precision, train_recall, val_dice, val_dp,   \
                                        val_precision, val_recall, pruned_train_dice, pruned_train_dp,                  \
-                                       pruned_train_precision, pruned_train_recall)
+                                       pruned_train_precision, pruned_train_recall) num_threads(NUMBER_OF_THREADS)
 		for (int molidx = 0; molidx < molDataSet.size(); ++molidx) {
 			auto &mol_it = molDataSet[molidx];
 			// run preduiction

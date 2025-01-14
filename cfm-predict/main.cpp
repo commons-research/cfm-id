@@ -19,7 +19,6 @@
 #include "MolData.h"
 #include "Param.h"
 #include "Version.h"
-#include "coretools/devtools.h"
 
 #include <GraphMol/SanitException.h>
 #include <GraphMol/SmilesParse/SmilesParse.h>
@@ -320,12 +319,10 @@ int main(int argc, char *argv[]) {
 		if (!to_stdout) std::cout << "Read " << data.size() << " molecules from input file." << std::endl;
 	} else {
 		data.push_back(MolData(single_prediction_id.c_str(), input_smiles_or_inchi.c_str(), &cfg));
-		OUT(input_smiles_or_inchi);
 	}
 
 	for (size_t mol_idx = 0; mol_idx < data.size(); ++mol_idx) {
 		auto mol_data = data[mol_idx];
-		OUT(mol_idx);
 		// Create the MolData structure with the input
 		try {
 			// Calculate the pruned FragmentGraph
@@ -335,9 +332,7 @@ int main(int argc, char *argv[]) {
 			else
 				fgen = new LikelyFragmentGraphGenerator(param, &cfg, prob_thresh_for_prune);
 
-			std::string output = "hellpooooo";
 			mol_data.computeLikelyFragmentGraphAndSetThetas(*fgen, do_annotate);
-			std::cout << output << std::endl;
 			mol_data.computePredictedSpectra(*nn_param, true, -1, min_peaks, max_peaks, postprocessing_energy,
 			                                 min_peak_intensity, cfg.default_mz_decimal_place, cfg.use_log_scale_peak);
 			// Predict the spectra (and post-process, use existing thetas)

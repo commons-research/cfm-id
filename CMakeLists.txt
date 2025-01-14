@@ -118,3 +118,5 @@ include_directories(cfm-code)
 add_subdirectory(cfm-predict)
 
 add_subdirectory(cfm-boost-test)
+
+add_subdirectory(cfm-train)

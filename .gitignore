@@ -4,3 +4,4 @@ build/
 rdkit/
 .idea/
 cmake-build-debug/
+coretools/
