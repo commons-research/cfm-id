@@ -193,8 +193,8 @@ int FragmentTreeNode::addChild(int e_f0, int e_to_allocate, std::vector<int> &ou
 			if (fragidx != charge_frag) split_charge_fragidx = fragidx;
 		}
 
-		// std::cout << "[DEBUG][ATOM][ID " << atom->getIdx() << "][" << atom->getSymbol() << "][Charge "
-		// << atom->getFormalCharge() << "][OrigValence " << orig_val << "]" << std::endl;
+		// std::cout << "[DEBUG][ATOM][ID " <<  atom->getIdx() << "][" << atom->getSymbol() <<
+		//           "][Charge " << atom->getFormalCharge() << "][OrigValence " << orig_val << "]" << std::endl;
 
 		// Check for charge via H loss
 		if (remaining_e[fragidx] > 0 && output_bmax[2 * numbonds + fragidx] == i) {
@@ -204,11 +204,11 @@ int FragmentTreeNode::addChild(int e_f0, int e_to_allocate, std::vector<int> &ou
 		}
 		atom->setNumExplicitHs(numH);
 
-		// std::cout << "[DEBUG][ATOM][ID " << atom->getIdx() << "][" << atom->getSymbol() << "][numH " << numH << "]"
-		// << std::endl;
+		// std::cout << "[DEBUG][ATOM][ID " <<  atom->getIdx() << "][" << atom->getSymbol() <<
+		//           "][numH " << numH << "]" << std::endl;
 	}
 
-	// std::cout << "[DEBUG][Fill Hydrogensl]" << RDKit::MolToSmiles(rwmol) << std::endl;
+	// std::cout << "[DEBUG][Fill Hydrogensl]" << RDKit::MolToSmiles( rwmol ) << std::endl;
 
 	// If there should be a split charge on the neutral loss
 	//(that isn't already covered by a negative ionic fragment),
@@ -244,9 +244,9 @@ int FragmentTreeNode::addChild(int e_f0, int e_to_allocate, std::vector<int> &ou
 		delete h2mol;
 	}
 
-	// std::cout << "[DEBUG][before sanitizeMol]" << RDKit::MolToSmiles(rwmol) << std::endl;
+	// std::cout << "[DEBUG][before sanitizeMol]" << RDKit::MolToSmiles( rwmol ) << std::endl;
 	RDKit::MolOps::sanitizeMol(rwmol);
-	// std::cout << "[DEBUG][after sanitizeMol]" << RDKit::MolToSmiles(rwmol) << std::endl;
+	// std::cout << "[DEBUG][after sanitizeMol]" << RDKit::MolToSmiles( rwmol ) << std::endl;
 
 	int min_radical_frag = -1;
 	int max_radical_frag = -1;
@@ -344,7 +344,7 @@ int FragmentTreeNode::addChild(int e_f0, int e_to_allocate, std::vector<int> &ou
 				std::vector<int> child_e_loc;
 				createChildIonElectronLocRecord(child_e_loc, child_ion);
 				child_ion->setProp("HadRingBreak", 0);
-				// std::cout << "[DEBUG][Child Ion]" << RDKit::MolToSmiles(*child_ion) << std::endl;
+				// std::cout << "[DEBUG][Child Ion]" << RDKit::MolToSmiles( *child_ion ) << std::endl;
 				labelExtraBreakPropertiesInIon(child_ion, ion, brk);
 				auto child_node =
 				    FragmentTreeNode(child_ion, child_nl, allocated_e[charge_frag], depth + 1, fh, child_e_loc, false);
@@ -415,7 +415,7 @@ int FragmentTreeNode::addChild(int e_f0, int e_to_allocate, std::vector<int> &ou
 					try {
 						RDKit::MolOps::sanitizeMol(rw_child_ion);
 					} catch (RDKit::MolSanitizeException &e) {
-						std::cout << "Could not sanitize skuuuuuu" << std::endl;
+						std::cout << "Could not sanitize " << std::endl;
 						throw e;
 					}
 
@@ -548,7 +548,7 @@ FragmentTreeNode::findAlreadyChargedOrSplitCharge(boost::tuple<int, int, int> &o
 	boost::get<2>(out_pidx_nidx_ridx) = -1;
 
 	// Disallow molecules with 2+ total charge -> can otherwise occur if lone pair and ionic occur together.
-	// std::cout << "[DEBUG][findAlreadyChargedOrSplitCharge]" << RDKit::MolOps::getFormalCharge(rwmol) << std::endl;
+	//  std::cout <<"[DEBUG][findAlreadyChargedOrSplitCharge]" <<RDKit::MolOps::getFormalCharge(rwmol) << std::endl;
 	if (RDKit::MolOps::getFormalCharge(rwmol) > 1) {
 		boost::get<0>(qfound_oktogo_switchq) = true;
 		boost::get<1>(qfound_oktogo_switchq) = false;
@@ -578,9 +578,8 @@ FragmentTreeNode::findAlreadyChargedOrSplitCharge(boost::tuple<int, int, int> &o
 			    (*ai)->getIdx(); // Note: only an assigned rad idx is added to out_pidx_nidx_ridx, this one is existing.
 	}
 
-	// std::cout << "[DEBUG][findAlreadyChargedOrSplitCharge][charge_side]" << frag_total_qs[charge_side] <<
-	// "[other_side]"
-	// << frag_total_qs[1 - charge_side] << std::endl;
+	// std::cout <<"[DEBUG][findAlreadyChargedOrSplitCharge][charge_side]" << frag_total_qs[charge_side] <<
+	// "[other_side]" << frag_total_qs[1 - charge_side] << std::endl;
 
 	// No charges found (or existing charges balance)
 	if (frag_total_qs[charge_side] == 0 && frag_total_qs[1 - charge_side] == 0) return qfound_oktogo_switchq;
@@ -603,7 +602,6 @@ FragmentTreeNode::findAlreadyChargedOrSplitCharge(boost::tuple<int, int, int> &o
 				if (atom->getFormalCharge() != 0) continue;
 				if (atom->getIsAromatic()) continue;
 				if (atom->getTotalNumHs() > 0) {
-					std::cout << "[DEBUG][output before crash ? ]" << RDKit::MolToSmiles(rwmol) << std::endl;
 					alterNumHs(atom, -1);
 					atom->setNumRadicalElectrons(1);
 					atom->calcExplicitValence();
@@ -640,7 +638,6 @@ FragmentTreeNode::findAlreadyChargedOrSplitCharge(boost::tuple<int, int, int> &o
 				else
 					neg_atom->setNumRadicalElectrons(1);
 				neg_atom->calcExplicitValence();
-				std::cout << "[DEBUG][output before crash ? ]" << RDKit::MolToSmiles(rwmol) << std::endl;
 				RDKit::MolOps::sanitizeMol(rwmol);
 				RDKit::MolOps::Kekulize(rwmol);
 				boost::get<1>(out_pidx_nidx_ridx)    = *it;
@@ -765,18 +762,15 @@ void FragmentTreeNode::assignChargeAndRadical(RDKit::RWMol &rwmol, int charge_id
 	RDKit::Atom *atom = rwmol.getAtomWithIdx(charge_idx);
 	// This is important, CC[CH3+] and CC[CH+] has the same radical electrons and formal charges,
 	// set H for charged atom  to avoid this problem
-	// std::cout << "[DEBUG][before assignChargeAndRadical]" << RDKit::MolToSmiles(rwmol) << std::endl;
-	// std::cout << "[DEBUG][before assignChargeAndRadical][charge_idx]" << charge_idx << "[radical_idx]" << radical_idx
-	// << std::endl;
 	alterNumHs(atom, 0);
 	if (is_negative) {
 		atom->setFormalCharge(-1);
 		alterNumHs(atom, -1); // Even-[H+] -> Even-[H+] + NL
 	} else {
 		atom->setFormalCharge(1);
-		if (radical_idx < 0) {
+		if (radical_idx < 0)
 			alterNumHs(atom, +1); // Even+[H+] -> Even+[H+] + NL
-		} else {
+		else {
 			RDKit::Atom *rad_atom = rwmol.getAtomWithIdx(radical_idx);
 			rad_atom->setNumRadicalElectrons(1);
 			if (radical_idx != charge_idx) { // Else Odd+. -> Odd+. (lone pair or C.H) + NL
@@ -805,12 +799,12 @@ void FragmentTreeNode::undoChargeAndRadical(RDKit::RWMol &rwmol, int charge_idx,
 
 	RDKit::Atom *atom = rwmol.getAtomWithIdx(charge_idx);
 	atom->setFormalCharge(0);
-	if (is_negative) {
+	if (is_negative)
 		alterNumHs(atom, +1); // Even-[H+] -> Even-[H+] + NL
-	} else {
-		if (radical_idx < 0) {
+	else {
+		if (radical_idx < 0)
 			alterNumHs(atom, -1); // Even+[H+] -> Even+[H+] + NL
-		} else {
+		else {
 			RDKit::Atom *rad_atom = rwmol.getAtomWithIdx(radical_idx);
 			rad_atom->setNumRadicalElectrons(0);
 			if (radical_idx != charge_idx) { // Else Odd+. -> Odd+. (lone pair) + NL
@@ -896,7 +890,7 @@ void FragmentTreeNode::generateBreaks(std::vector<Break> &breaks, bool include_H
 	RDKit::MolOps::findSSSR(*ion.get());
 	RDKit::RingInfo *rinfo = ion.get()->getRingInfo();
 	RDKit::ROMol::AtomIterator ai;
-	// std::cout << "[DEBUG][generateBreaks]" << RDKit::MolToSmiles(*ion.get()) << std::endl;
+	// std::cout << "[DEBUG][generateBreaks]" << RDKit::MolToSmiles( *ion.get() ) << std::endl;
 	labelNitroGroup(ion.get());
 	for (ai = ion.get()->beginAtoms(); ai != ion.get()->endAtoms(); ++ai) {
 		(*ai)->setProp("NumUnbrokenRings", rinfo->numAtomRings((*ai)->getIdx()));
