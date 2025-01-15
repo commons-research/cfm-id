@@ -39,7 +39,7 @@ probabilities using those thetas.
 #include <string>
 
 double MolData::getMolecularWeight() const {
-	romol_ptr_t mol = createMolPtr(smiles_or_inchi.c_str());
+	romol_ptr_t mol = createMolPtr(smiles_or_inchi.c_str(), false);
 	return getMonoIsotopicMass(mol);
 }
 
@@ -305,6 +305,7 @@ void MolData::computeTransitionThetas(Param &param) {
 	for (unsigned int energy = 0; energy < num_levels; energy++) {
 
 		// Compute the theta value for each feature vector
+		// std::cout << "[DEBUG] Number of transitions: " << fg->getNumTransitions() << std::endl;
 		thetas[energy].resize(fg->getNumTransitions());
 		for (unsigned int i = 0; i < fg->getNumTransitions(); i++)
 
@@ -809,7 +810,7 @@ void MolData::computeMergedPrediction() {
 }
 
 double MolData::getParentIonMass() const {
-	romol_ptr_t mol    = createMolPtr(smiles_or_inchi.c_str());
+	romol_ptr_t mol    = createMolPtr(smiles_or_inchi.c_str(), false);
 	double parent_mass = getMonoIsotopicMass(mol);
 	switch (cfg->ionization_mode) {
 	case (POSITIVE_ESI_IONIZATION_MODE): parent_mass += 1.007276; break;

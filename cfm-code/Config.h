@@ -28,6 +28,7 @@
 static const std::string APP_STRING = "CFM-ID";
 
 // Default number of threads to use
+// static const size_t NUMBER_OF_THREADS = 1;
 static const size_t NUMBER_OF_THREADS = coretools::getNumThreads();
 
 // Fragmentation depth in the initial fragmentation graph

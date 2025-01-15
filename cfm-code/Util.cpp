@@ -128,13 +128,13 @@ void remove_extra_Hs(RDKit::RWMol &mol) {
 	std::cout << "[DEBUG][remove_extra_Hs][after] " << RDKit::MolToSmiles(mol) << std::endl;
 }
 
-romol_ptr_t createMolPtr(const char *smiles_or_inchi) {
+romol_ptr_t createMolPtr(const char *smiles_or_inchi, bool sanitize) {
 	RDKit::RWMol *rwmol;
 	if (std::string(smiles_or_inchi).substr(0, 6) == "InChI=") {
 		RDKit::ExtraInchiReturnValues rv;
 		rwmol = RDKit::InchiToMol(smiles_or_inchi, rv);
 	} else
-		rwmol = RDKit::SmilesToMol(smiles_or_inchi);
+		rwmol = RDKit::SmilesToMol(smiles_or_inchi, 0, sanitize);
 	auto *mol = static_cast<RDKit::ROMol *>(rwmol);
 	addIonicChargeLabels(mol);
 	return romol_ptr_t(mol);

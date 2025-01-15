@@ -16,13 +16,14 @@
 # of the cfm source tree.
 #########################################################################*/
 
+#include "Config.h"
+#include "EmModel.h"
+#include "EmNNModel.h"
+#include "omp.h"
 #include <boost/filesystem.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/program_options.hpp>
 #include <limits>
-
-#include "EmModel.h"
-#include "EmNNModel.h"
 
 void parseInputFile(std::vector<MolData> &data, std::string &input_filename, config_t *cfg);
 
@@ -145,7 +146,7 @@ int main(int argc, char *argv[]) {
 
 	std::cout << "Done" << std::endl;
 
-	std::cout << "Parsing input file...";
+	std::cout << "Parsing input file..." << std::endl;
 	std::vector<MolData> data;
 	parseInputFile(data, input_filename, &cfg);
 	std::cout << "Done" << std::endl;
@@ -153,69 +154,64 @@ int main(int argc, char *argv[]) {
 	// Fragment Graph Computation (or load from file)
 	time_t before_fg, after_fg;
 	before_fg = time(nullptr);
-	std::cout << "Computing fragmentation graphs and features..";
+	std::cout << "Computing fragmentation graphs and features using " << NUMBER_OF_THREADS << " threads..."
+	          << std::endl;
 
 	int success_count = 0, except_count = 0;
-	auto mit = data.begin();
-	while (mit != data.end()) {
+#pragma omp parallel for reduction(+ : success_count, except_count) num_threads(NUMBER_OF_THREADS)
+	for (int i = 0; i < data.size(); ++i) {
 		try {
-			// If we're not training, only load the ones we'll be testing
-
+			auto &mol = data[i];
 			std::string fv_filename =
-			    fv_fragment_graphs_folder + "/" + boost::lexical_cast<std::string>(mit->getId()) + "_graph.fg";
+			    fv_fragment_graphs_folder + "/" + boost::lexical_cast<std::string>(mol.getId()) + "_graph.fg";
 
 			// if there is a cached/precomputed fv_graph file
 			if (boost::filesystem::exists(fv_filename)) {
-
-				std::ifstream fv_ifs;
-				fv_ifs = std::ifstream(fv_filename.c_str(), std::ifstream::in | std::ios::binary);
-				mit->readInFVFragmentGraphFromStream(fv_ifs);
+				std::ifstream fv_ifs(fv_filename.c_str(), std::ifstream::in | std::ios::binary);
+				mol.readInFVFragmentGraphFromStream(fv_ifs);
 				fv_ifs.close();
 
-				std::ofstream eout;
-				eout.open(status_filename.c_str(), std::fstream::out | std::fstream::app);
-				eout << "ID: " << mit->getId() << " is Loaded from cached file ";
-				eout << " Num Frag = " << mit->getNumFragments();
-				eout << " Num Trans = " << mit->getNumTransitions() << std::endl;
-				eout.close();
-
+#pragma omp critical
+				{
+					std::ofstream eout(status_filename.c_str(), std::fstream::out | std::fstream::app);
+					eout << "ID: " << mol.getId() << " is Loaded from cached file ";
+					eout << " Num Frag = " << mol.getNumFragments();
+					eout << " Num Trans = " << mol.getNumTransitions() << std::endl;
+				}
 			} else {
 				time_t before, after;
 				before = time(nullptr);
-				mit->computeFragmentGraphAndReplaceMolsWithFVs(&fc, true);
-
-				// write log
-				std::ofstream eout;
-				eout.open(status_filename.c_str(), std::fstream::out | std::fstream::app);
+				mol.computeFragmentGraphAndReplaceMolsWithFVs(&fc, true);
 				after = time(nullptr);
-				eout << "ID: " << mit->getId() << " is Done. Time Elaspsed = " << (after - before) << " Seconds ";
-				eout << " Num Frag = " << mit->getNumFragments();
-				eout << " Num Trans = " << mit->getNumTransitions() << std::endl;
-				eout.close();
+
+#pragma omp critical
+				{
+					std::ofstream eout(status_filename.c_str(), std::fstream::out | std::fstream::app);
+					eout << "ID: " << mol.getId() << " is Done. Time Elaspsed = " << (after - before) << " Seconds ";
+					eout << " Num Frag = " << mol.getNumFragments();
+					eout << " Num Trans = " << mol.getNumTransitions() << std::endl;
+				}
 
 				if (!boost::filesystem::exists(fv_filename)) {
-					// std::string fv_tmp_filename = fv_filename + "_tmp";
-					std::ofstream fv_out;
-					fv_out.open(fv_filename.c_str(), std::ios::out | std::ios::binary);
-					mit->writeFVFragmentGraphToStream(fv_out);
+					std::ofstream fv_out(fv_filename.c_str(), std::ios::out | std::ios::binary);
+					mol.writeFVFragmentGraphToStream(fv_out);
 					fv_out.close();
-					// rename file
-					//  boost::filesystem::rename(fv_tmp_filename, fv_filename);
 				}
 			}
 			success_count++;
-			mit++;
 		} catch (std::exception &e) {
-			std::ofstream eout;
-			eout.open(status_filename.c_str(), std::fstream::out | std::fstream::app);
-			eout << "Exception occurred computing fragment graph for " << mit->getId() << std::endl;
-			eout << mit->getSmilesOrInchi() << std::endl;
-			eout << e.what() << std::endl << std::endl;
-			except_count++;
-			eout << except_count << " exceptions, from " << except_count + success_count << " total" << std::endl;
-			eout.close();
-			// in case current data is not valid, remove it from the list
-			mit = data.erase(mit);
+#pragma omp critical
+			{
+				std::ofstream eout(status_filename.c_str(), std::fstream::out | std::fstream::app);
+				eout << "Exception occurred computing fragment graph for " << data[i].getId() << std::endl;
+				eout << data[i].getSmilesOrInchi() << std::endl;
+				eout << e.what() << std::endl << std::endl;
+				except_count++;
+				eout << except_count << " exceptions, from " << except_count + success_count << " total" << std::endl;
+			}
+// in case current data is not valid, remove it from the list
+#pragma omp critical
+			{ data.erase(data.begin() + i); }
 		}
 	}
 
@@ -231,7 +227,7 @@ int main(int argc, char *argv[]) {
 
 	std::cout << "Loading spectra..";
 	bool spectra_in_msp = false;
-	std::string pre_id  = "";
+	std::string pre_id;
 	if (peakfile_dir_or_msp.substr(peakfile_dir_or_msp.size() - 4, 4) == ".msp") {
 		spectra_in_msp = true;
 		// Allow splitting of input data into multiple msps by naming them

@@ -62,7 +62,7 @@ int addIonicChargeLabels(const RDKit::ROMol *romol);
 void alterNumHs(RDKit::Atom *atom, int H_diff);
 void remove_extra_Hs(RDKit::RWMol &mol);
 
-romol_ptr_t createMolPtr(const char *smiles_or_inchi);
+romol_ptr_t createMolPtr(const char *smiles_or_inchi, bool sanitize = true);
 
 // Helper function label NirtoGroup
 void labelNitroGroup(const RDKit::ROMol *mol);

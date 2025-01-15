@@ -360,6 +360,7 @@ double EmModel::trainModel(std::vector<MolData> &molDataSet, int group, std::str
 			if (mol.hasEmptySpectrum(energy_level)) { continue; }
 			if (mol.getGroup() == validation_group && cfg->disable_cross_val_metrics) { continue; }
 			computeThetas(&mol);
+
 			mol.computeLogTransitionProbabilities();
 
 			// Apply the peak evidence, compute the beliefs and record the sufficient
@@ -370,7 +371,7 @@ double EmModel::trainModel(std::vector<MolData> &molDataSet, int group, std::str
 
 #pragma omp critical // since we are updating shared suft we need to make sure we are not writing to the same memory
                      // location
-			recordSufficientStatistics(suft, molidx, &mol, &beliefs, energy_level);
+			{ recordSufficientStatistics(suft, molidx, &mol, &beliefs, energy_level); }
 		}
 
 		auto after = std::chrono::system_clock::now();

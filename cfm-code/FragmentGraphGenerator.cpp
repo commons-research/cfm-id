@@ -168,14 +168,13 @@ void FragmentGraphGenerator::compute(FragmentTreeNode &node, int remaining_depth
 
 	// Add the node to the graph, and return a fragment id
 	int id = -1;
-	if (mols_to_fv)
+	if (mols_to_fv) {
+		// std::cout << "DEBUG : Adding to graph and replacing mol with FV" << std::endl;
 		// id = current_graph->addToGraphWithThetas(node, node.getAllTmpThetas(), parent_id);
 		id = current_graph->addToGraphAndReplaceMolWithFV(node, parent_id, fc);
-	else
+	} else
 		id = current_graph->addToGraph(node, parent_id);
 
-	// std::cout <<  parent_id << " "  <<
-	//           id << " " <<  RDKit::MolToSmiles(*node.ion)  << std::endl;
 	// Only compute to the desired depth
 	if (remaining_depth <= 0) return;
 
@@ -195,7 +194,6 @@ void FragmentGraphGenerator::compute(FragmentTreeNode &node, int remaining_depth
 	else // Break from Non-Precursor
 		h_loss_allowed = !(current_graph->includesHLossesPrecursorOnly()) && current_graph->includesHLosses();
 	node.generateBreaks(breaks, h_loss_allowed, current_graph->allowCyclization());
-
 	// Generate Child Node for this breaks
 	bool ring_can_break = (remaining_ring_breaks > 0);
 

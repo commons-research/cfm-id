@@ -221,7 +221,7 @@ int FragmentTreeNode::addChild(int e_f0, int e_to_allocate, std::vector<int> &ou
 			if (fragidx == (1 - charge_frag) && atom->getFormalCharge() == 0 && atom->getTotalNumHs() > 0) {
 				atom->setFormalCharge(-1);
 				alterNumHs(atom, -1);
-				atom->calcExplicitValence();
+				atom->calcExplicitValence(false);
 				qloc_found = true;
 				break;
 			}
@@ -245,7 +245,7 @@ int FragmentTreeNode::addChild(int e_f0, int e_to_allocate, std::vector<int> &ou
 	}
 
 	// std::cout << "[DEBUG][before sanitizeMol]" << RDKit::MolToSmiles( rwmol ) << std::endl;
-	RDKit::MolOps::sanitizeMol(rwmol);
+	// RDKit::MolOps::sanitizeMol(rwmol);
 	// std::cout << "[DEBUG][after sanitizeMol]" << RDKit::MolToSmiles( rwmol ) << std::endl;
 
 	int min_radical_frag = -1;
@@ -413,7 +413,7 @@ int FragmentTreeNode::addChild(int e_f0, int e_to_allocate, std::vector<int> &ou
 
 					// sanitize the modified mol
 					try {
-						RDKit::MolOps::sanitizeMol(rw_child_ion);
+						// RDKit::MolOps::sanitizeMol(rw_child_ion);
 					} catch (RDKit::MolSanitizeException &e) {
 						std::cout << "Could not sanitize " << std::endl;
 						throw e;
@@ -604,7 +604,7 @@ FragmentTreeNode::findAlreadyChargedOrSplitCharge(boost::tuple<int, int, int> &o
 				if (atom->getTotalNumHs() > 0) {
 					alterNumHs(atom, -1);
 					atom->setNumRadicalElectrons(1);
-					atom->calcExplicitValence();
+					atom->calcExplicitValence(false);
 					boost::get<1>(qfound_oktogo_switchq) = true;
 					boost::get<2>(out_pidx_nidx_ridx)    = i; // Assigned rad_idx
 					break;
@@ -637,8 +637,8 @@ FragmentTreeNode::findAlreadyChargedOrSplitCharge(boost::tuple<int, int, int> &o
 					alterNumHs(neg_atom, +1);
 				else
 					neg_atom->setNumRadicalElectrons(1);
-				neg_atom->calcExplicitValence();
-				RDKit::MolOps::sanitizeMol(rwmol);
+				neg_atom->calcExplicitValence(false);
+				// RDKit::MolOps::sanitizeMol(rwmol);
 				RDKit::MolOps::Kekulize(rwmol);
 				boost::get<1>(out_pidx_nidx_ridx)    = *it;
 				boost::get<1>(qfound_oktogo_switchq) = true;
@@ -673,8 +673,8 @@ void FragmentTreeNode::undoAlreadyChargedOrSplitCharge(RDKit::RWMol &rwmol,
 			neg_atom->setNumRadicalElectrons(0);
 		else
 			alterNumHs(neg_atom, -1);
-		neg_atom->calcExplicitValence();
-		RDKit::MolOps::sanitizeMol(rwmol);
+		neg_atom->calcExplicitValence(false);
+		// RDKit::MolOps::sanitizeMol(rwmol);
 	}
 }
 

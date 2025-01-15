@@ -19,6 +19,7 @@
 #include "MolData.h"
 #include "Param.h"
 #include "Version.h"
+#include "omp.h"
 
 #include <GraphMol/SanitException.h>
 #include <GraphMol/SmilesParse/SmilesParse.h>
@@ -321,6 +322,7 @@ int main(int argc, char *argv[]) {
 		data.push_back(MolData(single_prediction_id.c_str(), input_smiles_or_inchi.c_str(), &cfg));
 	}
 
+#pragma omp parallel for num_threads(NUMBER_OF_THREADS) schedule(static)
 	for (size_t mol_idx = 0; mol_idx < data.size(); ++mol_idx) {
 		auto mol_data = data[mol_idx];
 		// Create the MolData structure with the input
