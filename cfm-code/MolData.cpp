@@ -124,9 +124,8 @@ void MolData::computeLikelyFragmentGraphAndSetThetas(LikelyFragmentGraphGenerato
 	// vectors
 	fg                          = fgen.createNewGraph(cfg);
 	FragmentTreeNode *startnode = fgen.createStartNode(smiles_or_inchi, cfg->ionization_mode);
-	std::cout << "Computing likely fragment graph for " << getId() << " " << getSmilesOrInchi() << std::endl;
+
 	fgen.compute(*startnode, cfg->fg_depth, -1, 0.0, cfg->max_ring_breaks);
-	std::cout << "Done computing likely fragment graph for " << getId() << " " << getSmilesOrInchi() << std::endl;
 	if (!cfg->allow_frag_detours) fg->removeDetours();
 
 	delete startnode;
@@ -809,8 +808,8 @@ void MolData::computeMergedPrediction() {
 	m_merged_predicted_spectra->normalizeAndSort();
 }
 
-double MolData::getParentIonMass() const {
-	romol_ptr_t mol    = createMolPtr(smiles_or_inchi.c_str(), false);
+double MolData::getParentIonMass(bool sanitize) const {
+	romol_ptr_t mol    = createMolPtr(smiles_or_inchi.c_str(), sanitize);
 	double parent_mass = getMonoIsotopicMass(mol);
 	switch (cfg->ionization_mode) {
 	case (POSITIVE_ESI_IONIZATION_MODE): parent_mass += 1.007276; break;

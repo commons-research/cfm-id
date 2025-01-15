@@ -322,8 +322,10 @@ int main(int argc, char *argv[]) {
 		data.push_back(MolData(single_prediction_id.c_str(), input_smiles_or_inchi.c_str(), &cfg));
 	}
 
-#pragma omp parallel for num_threads(NUMBER_OF_THREADS) schedule(static)
+	// #pragma omp parallel for num_threads(NUMBER_OF_THREADS) schedule(static)
 	for (size_t mol_idx = 0; mol_idx < data.size(); ++mol_idx) {
+		// std::cout << "Predicting spectra for " << data[mol_idx].getId() << " " << data[mol_idx].getSmilesOrInchi()
+		// << std::endl;
 		auto mol_data = data[mol_idx];
 		// Create the MolData structure with the input
 		try {
@@ -335,6 +337,7 @@ int main(int argc, char *argv[]) {
 				fgen = new LikelyFragmentGraphGenerator(param, &cfg, prob_thresh_for_prune);
 
 			mol_data.computeLikelyFragmentGraphAndSetThetas(*fgen, do_annotate);
+
 			mol_data.computePredictedSpectra(*nn_param, true, -1, min_peaks, max_peaks, postprocessing_energy,
 			                                 min_peak_intensity, cfg.default_mz_decimal_place, cfg.use_log_scale_peak);
 			// Predict the spectra (and post-process, use existing thetas)
@@ -404,10 +407,13 @@ int main(int argc, char *argv[]) {
 			// mol_data.writeFragmentsOnly(*out);
 			// }
 
-		} else if (output_mode == MSP_OUTPUT_MODE)
+		} else if (output_mode == MSP_OUTPUT_MODE) {
+			std::cout << "[DEBUG] writing to msp" << std::endl;
 			mol_data.writePredictedSpectraToMspFileStream(*out);
-		else if (output_mode == MGF_OUTPUT_MODE)
+		} else if (output_mode == MGF_OUTPUT_MODE) {
+			std::cout << "[DEBUG] writing to mgf" << std::endl;
 			mol_data.writePredictedSpectraToMgfFileStream(*out);
+		}
 
 		if (output_mode == NO_OUTPUT_MODE) {
 			if (!to_stdout) of.close();

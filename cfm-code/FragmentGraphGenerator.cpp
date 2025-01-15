@@ -58,6 +58,7 @@ FragmentTreeNode *FragmentGraphGenerator::createStartNode(std::string &smiles_or
 
 	// This is hacky way to get mol Canonicalized
 	rwmol = RDKit::SmilesToMol(RDKit::MolToSmiles(*rwmol));
+
 	// Canonical Rank Atoms
 	/*std::vector<unsigned int> atomRanks;
 	bool breakTies = true;
