@@ -1,5 +1,5 @@
 ```bash
-cmake ..  -DINCLUDE_TESTS=ON -DINCLUDE_TRAIN=ON \                                                                  base  !2/4
+cmake ..  -DINCLUDE_TESTS=ON -DINCLUDE_TRAIN=ON \
         -DLPSOLVE_INCLUDE_DIR=/opt/homebrew/Cellar/lp_solve/5.5.2.11/include \
         -DLPSOLVE_LIBRARY_DIR=/opt/homebrew/Cellar/lp_solve/5.5.2.11/lib \
         -DRDKIT_INCLUDE_DIR=/opt/homebrew/Cellar/rdkit/2024.09.4/include/rdkit/ \
