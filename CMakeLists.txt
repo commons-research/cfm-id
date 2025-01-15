@@ -24,7 +24,7 @@ if (INCLUDE_TESTS)
     list(APPEND Boost_components unit_test_framework)
 endif()
 
-find_package(Boost 1.86 REQUIRED COMPONENTS ${Boost_components})
+find_package(Boost REQUIRED COMPONENTS ${Boost_components})
 include_directories(${Boost_INCLUDE_DIRS})
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
