@@ -211,23 +211,27 @@ double EmModel::updateParametersGradientAscent(std::vector<MolData> &data, suft_
 
 			std::fill(grads.begin(), grads.end(), 0.0);
 
-#pragma omp parallel for reduction(+ : num_trans) num_threads(NUMBER_OF_THREADS)
-			for (int molidx = 0; molidx < data.size(); ++molidx) {
-				auto &mol_it = data[molidx];
+#pragma omp parallel num_threads(NUMBER_OF_THREADS)
+			{
+				std::vector<double> local_grads(grads.size(), 0.0);
+				double local_num_trans = 0;
 
-				if (minibatch_flags[molidx] == batch_idx && mol_it.getGroup() != validation_group) {
-					// so now it should not crash anymore
-					if (!mol_it.hasComputedGraph()) continue;
+#pragma omp for nowait
+				for (int molidx = 0; molidx < data.size(); ++molidx) {
+					auto &mol_it = data[molidx];
 
-					// Store the local gradient for the current thread
-					std::vector<double> local_grads(grads.size(), 0.0);
-					num_trans +=
-					    computeAndAccumulateGradient(&local_grads[0], molidx, mol_it, suft, sampling_method, energy);
+					if (minibatch_flags[molidx] == batch_idx && mol_it.getGroup() != validation_group) {
+						if (!mol_it.hasComputedGraph()) continue;
+
+						local_num_trans += computeAndAccumulateGradient(&local_grads[0], molidx, mol_it, suft,
+						                                                sampling_method, energy);
+					}
+				}
 
 #pragma omp critical
-					{
-						for (size_t i = 0; i < grads.size(); ++i) { grads[i] += local_grads[i]; }
-					}
+				{
+					for (size_t i = 0; i < grads.size(); ++i) { grads[i] += local_grads[i]; }
+					num_trans += local_num_trans;
 				}
 			}
 			// update L2 only if lambda > 0
@@ -548,8 +552,9 @@ void EmModel::updateEmTrainingParams(double loss_change_rate, float &learning_ra
 double EmModel::computeAndSyncLoss(std::vector<MolData> &data, suft_counts_t &suft, unsigned int energy) {
 
 	double loss = 0.0;
-	auto mol_it = data.begin();
-	for (int molidx = 0; mol_it != data.end(); ++mol_it, molidx++) {
+#pragma omp parallel for reduction(+ : loss) num_threads(NUMBER_OF_THREADS) schedule(static)
+	for (int molidx = 0; molidx < data.size(); ++molidx) {
+		auto mol_it = &data[molidx];
 		if (mol_it->getGroup() != validation_group) {
 			double mol_loss = computeLogLikelihoodLoss(molidx, *mol_it, suft, energy);
 			loss += mol_loss;
