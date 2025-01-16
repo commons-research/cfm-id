@@ -374,9 +374,7 @@ double EmModel::trainModel(std::vector<MolData> &molDataSet, int group, std::str
 			Inference infer(&mol, cfg);
 			infer.calculateBeliefs(beliefs, energy_level);
 
-#pragma omp critical // since we are updating shared suft we need to make sure we are not writing to the same memory
-                     // location
-			{ recordSufficientStatistics(suft, molidx, &mol, &beliefs, energy_level); }
+			recordSufficientStatistics(suft, molidx, &mol, &beliefs, energy_level);
 		}
 
 		auto after = std::chrono::system_clock::now();
