@@ -239,6 +239,7 @@ double EmModel::updateParametersGradientAscent(std::vector<MolData> &data, suft_
 			if (num_trans > 0)
 				for (auto &grad : grads) grad /= num_trans;
 			solver->adjustWeights(grads, this->used_idxs, param);
+			std::cout << "Batch " << batch_idx << " of " << num_batch << " completed" << std::endl;
 		}
 
 		// End of epoch
